@@ -41,19 +41,45 @@ function Game() {
 	});
 
 	const formWord = (data: Data) => {
-		if (!data.isIncluded) {
-			let newData = { ...gameData[data.id], isIncluded: true };
-			setGameData([
-				...gameData.slice(0, data.id),
-				newData,
-				...gameData.slice(data.id + 1),
-			]);
-			let newWord = currentWord.concat(data.letter);
-			setCurrentWord(newWord);
+		let currentBox: HTMLElement | null = document.getElementById(
+			`${data.id}`
+		);
+		let newData = { ...gameData[data.id] };
+
+		if (!data.isIncluded && currentBox) {
+			currentBox.addEventListener("mousemove", (event) => {
+				if (currentBox) {
+					// CHECK IF LOCATION OF MOUSE POINTER IS WITHIN 25% to 75% VERTICALLY AND HORIZONTALLY
+					let boxX = currentBox.offsetWidth;
+					let boxY = currentBox.offsetHeight;
+
+					let mouseX = event.clientX - currentBox.offsetLeft,
+						mouseY = event.clientY - currentBox.offsetTop;
+
+					if (
+						mouseX > boxX / 4 &&
+						mouseX < (3 * boxX) / 4 &&
+						mouseY > boxY / 4 &&
+						mouseY < (3 * boxY) / 4
+					) {
+						newData = { ...gameData[data.id], isIncluded: true };
+
+						setGameData([
+							...gameData.slice(0, data.id),
+							newData,
+							...gameData.slice(data.id + 1),
+						]);
+						let newWord = currentWord.concat(data.letter);
+						setCurrentWord(newWord);
+						currentBox.classList.remove("hover:bg-violet-400");
+						currentBox.classList.add("bg-teal-200");
+					}
+				}
+			});
 		}
 	};
 
-	const endWordAndReset = () => {
+	const endWordAndReset = (data: Data) => {
 		console.log(currentWord);
 		setCurrentWord("");
 		setGameData(originalData);
@@ -62,7 +88,7 @@ function Game() {
 	return (
 		<div className="flex justify-center items-center flex-col gap-5">
 			<WordDisplay word={currentWord} />
-			<div className="grid grid-cols-4 gap-1">
+			<div className="grid grid-cols-4 gap-1.5">
 				{gameData.map((data) => {
 					return (
 						<GameBox
@@ -74,7 +100,7 @@ function Game() {
 								isMouseDown && formWord(data);
 							}}
 							endWord={() => {
-								endWordAndReset();
+								endWordAndReset(data);
 							}}
 							{...data}
 						/>

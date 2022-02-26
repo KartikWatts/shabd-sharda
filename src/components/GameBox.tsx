@@ -13,6 +13,7 @@ type DataProps = {
 function GameBox(props: DataProps) {
 	return (
 		<div
+			id={props.id.toString()}
 			onMouseDown={props.startWord}
 			onMouseOver={props.touchBox}
 			onMouseUp={props.endWord}
