@@ -5,20 +5,43 @@ type DataProps = {
 	letter: string;
 	value: number;
 	isIncluded: boolean;
-	touchBox: () => void;
-	startWord: () => void;
+	isMouseDown: boolean;
+	updateState: (id: number) => void;
 	endWord: () => void;
 };
 
 function GameBox(props: DataProps) {
 	return (
 		<div
-			id={props.id.toString()}
-			onMouseDown={props.startWord}
-			onMouseOver={props.touchBox}
+			id={`box-${props.id.toString()}`}
 			onMouseUp={props.endWord}
+			onMouseMove={(event) => {
+				if (props.isMouseDown) {
+					let currentBox: HTMLElement | null =
+						document.getElementById(`box-${props.id}`);
+					if (currentBox) {
+						// CHECK IF LOCATION OF MOUSE POINTER IS WITHIN 25% to 75% VERTICALLY AND HORIZONTALLY
+						let boxX = currentBox.offsetWidth;
+						let boxY = currentBox.offsetHeight;
+
+						let mouseX = event.clientX - currentBox.offsetLeft,
+							mouseY = event.clientY - currentBox.offsetTop;
+
+						if (
+							mouseX > boxX / 10 &&
+							mouseX < (8.5 * boxX) / 10 &&
+							mouseY > boxY / 10 &&
+							mouseY < (8.5 * boxY) / 10
+						) {
+							currentBox.classList.remove("hover:bg-violet-400");
+							currentBox.classList.add("bg-teal-200");
+							props.updateState(props.id);
+						}
+					}
+				}
+			}}
 			className={
-				"transition duration-300 w-20 h-20 sm:w-28 sm:h-28 bg-blue-400 rounded-md drop-shadow-md flex justify-center items-center text-4xl sm:text-5xl select-none hover:bg-violet-400"
+				"game-box transition duration-300 w-20 h-20 sm:w-28 sm:h-28 bg-blue-400 rounded-md drop-shadow-md flex justify-center items-center text-4xl sm:text-5xl select-none hover:bg-violet-400"
 			}
 		>
 			<span className="absolute top-0 left-1 sm:top-0.5 sm:left-1 text-sm sm:text-xl">

@@ -40,47 +40,37 @@ function Game() {
 		setIsMouseDown(false);
 	});
 
-	const formWord = (data: Data) => {
-		let currentBox: HTMLElement | null = document.getElementById(
-			`${data.id}`
-		);
-		let newData = { ...gameData[data.id] };
+	const updateState = (id: number) => {
+		let data = { ...gameData[id] };
+		if (!data.isIncluded) {
+			let newData = { ...gameData[id] };
 
-		if (!data.isIncluded && currentBox) {
-			currentBox.addEventListener("mousemove", (event) => {
-				if (currentBox) {
-					// CHECK IF LOCATION OF MOUSE POINTER IS WITHIN 25% to 75% VERTICALLY AND HORIZONTALLY
-					let boxX = currentBox.offsetWidth;
-					let boxY = currentBox.offsetHeight;
+			newData = {
+				...gameData[data.id],
+				isIncluded: true,
+			};
 
-					let mouseX = event.clientX - currentBox.offsetLeft,
-						mouseY = event.clientY - currentBox.offsetTop;
-
-					if (
-						mouseX > boxX / 4 &&
-						mouseX < (3 * boxX) / 4 &&
-						mouseY > boxY / 4 &&
-						mouseY < (3 * boxY) / 4
-					) {
-						newData = { ...gameData[data.id], isIncluded: true };
-
-						setGameData([
-							...gameData.slice(0, data.id),
-							newData,
-							...gameData.slice(data.id + 1),
-						]);
-						let newWord = currentWord.concat(data.letter);
-						setCurrentWord(newWord);
-						currentBox.classList.remove("hover:bg-violet-400");
-						currentBox.classList.add("bg-teal-200");
-					}
-				}
-			});
+			setGameData([
+				...gameData.slice(0, data.id),
+				newData,
+				...gameData.slice(data.id + 1),
+			]);
+			let newWord = currentWord.concat(data.letter);
+			setCurrentWord(newWord);
 		}
 	};
 
 	const endWordAndReset = (data: Data) => {
 		console.log(currentWord);
+		let boxElements = document.querySelectorAll(".game-box");
+
+		let boxElementsArray = Array.prototype.slice.call(boxElements);
+		boxElementsArray.map((box) => {
+			if (box.classList.contains("bg-teal-200")) {
+				box.classList.remove("bg-teal-200");
+				box.classList.add("hover:bg-violet-400");
+			}
+		});
 		setCurrentWord("");
 		setGameData(originalData);
 	};
@@ -93,15 +83,11 @@ function Game() {
 					return (
 						<GameBox
 							key={data.id}
-							startWord={() => {
-								currentWord == "" && formWord(data);
-							}}
-							touchBox={() => {
-								isMouseDown && formWord(data);
-							}}
 							endWord={() => {
 								endWordAndReset(data);
 							}}
+							isMouseDown={isMouseDown}
+							updateState={() => updateState(data.id)}
 							{...data}
 						/>
 					);
