@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import GameBox from "../components/GameBox";
 import WordDisplay from "../components/WordDisplay";
+import letter_selector_sound from "../assets/sounds/letter_selector.mp3";
+import already_present_sound from "../assets/sounds/already_present.mp3";
+import accepted_word_sound from "../assets/sounds/accepted_word.mp3";
+import invalid_word_sound from "../assets/sounds/invalid_word.mp3";
+import useSound from "use-sound";
 
 function Game() {
 	interface Data {
@@ -66,6 +71,11 @@ function Game() {
 		{ value: "SEAMER", isIncluded: false },
 	];
 
+	const [playLetterSelectorSound] = useSound(letter_selector_sound);
+	const [playAlreadyPresentSound] = useSound(already_present_sound);
+	const [playAcceptedWordSound] = useSound(accepted_word_sound);
+	const [playInvalidWordSound] = useSound(invalid_word_sound);
+
 	const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
 	const [currentWord, setCurrentWord] = useState<string>("");
 	const [gameData, setGameData] = useState<Data[]>(originalData);
@@ -90,7 +100,7 @@ function Game() {
 				...gameData[data.id],
 				isIncluded: true,
 			};
-
+			playLetterSelectorSound();
 			setGameData([
 				...gameData.slice(0, data.id),
 				newData,
@@ -139,6 +149,11 @@ function Game() {
 				}, 400);
 			}
 		});
+
+		if (validStatus == 0) playInvalidWordSound();
+		if (validStatus == 1) playAcceptedWordSound();
+		if (validStatus == 2) playAlreadyPresentSound();
+
 		setTimeout(() => {
 			if (validStatus == 1) tempScore += currentWordScore;
 			setGameScore(tempScore);
