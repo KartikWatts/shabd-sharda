@@ -33,6 +33,7 @@ function GameBox(props: DataProps) {
 							mouseY > boxY / 10 &&
 							mouseY < (8.5 * boxY) / 10
 						) {
+							currentBox.classList.remove("bg-blue-400");
 							currentBox.classList.remove("hover:bg-violet-400");
 							currentBox.classList.add("bg-teal-200");
 							props.updateState(props.id);

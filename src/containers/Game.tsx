@@ -10,28 +10,67 @@ function Game() {
 		isIncluded: boolean;
 	}
 
+	interface WordsData {
+		value: string;
+		isIncluded: boolean;
+	}
+
 	let originalData: Data[] = [
-		{ id: 0, letter: "A", value: 2, isIncluded: false },
-		{ id: 1, letter: "B", value: 2, isIncluded: false },
-		{ id: 2, letter: "C", value: 2, isIncluded: false },
-		{ id: 3, letter: "D", value: 2, isIncluded: false },
-		{ id: 4, letter: "A", value: 2, isIncluded: false },
-		{ id: 5, letter: "B", value: 2, isIncluded: false },
-		{ id: 6, letter: "C", value: 2, isIncluded: false },
-		{ id: 7, letter: "D", value: 2, isIncluded: false },
-		{ id: 8, letter: "A", value: 2, isIncluded: false },
-		{ id: 9, letter: "B", value: 2, isIncluded: false },
-		{ id: 10, letter: "C", value: 2, isIncluded: false },
-		{ id: 11, letter: "D", value: 2, isIncluded: false },
-		{ id: 12, letter: "A", value: 2, isIncluded: false },
-		{ id: 13, letter: "B", value: 2, isIncluded: false },
-		{ id: 14, letter: "C", value: 2, isIncluded: false },
-		{ id: 15, letter: "D", value: 2, isIncluded: false },
+		{ id: 0, letter: "C", value: 3, isIncluded: false },
+		{ id: 1, letter: "S", value: 2, isIncluded: false },
+		{ id: 2, letter: "E", value: 1, isIncluded: false },
+		{ id: 3, letter: "T", value: 2, isIncluded: false },
+		{ id: 4, letter: "W", value: 6, isIncluded: false },
+		{ id: 5, letter: "A", value: 2, isIncluded: false },
+		{ id: 6, letter: "N", value: 2, isIncluded: false },
+		{ id: 7, letter: "A", value: 2, isIncluded: false },
+		{ id: 8, letter: "O", value: 2, isIncluded: false },
+		{ id: 9, letter: "M", value: 4, isIncluded: false },
+		{ id: 10, letter: "O", value: 2, isIncluded: false },
+		{ id: 11, letter: "E", value: 1, isIncluded: false },
+		{ id: 12, letter: "D", value: 3, isIncluded: false },
+		{ id: 13, letter: "E", value: 1, isIncluded: false },
+		{ id: 14, letter: "R", value: 2, isIncluded: false },
+		{ id: 15, letter: "G", value: 4, isIncluded: false },
+	];
+
+	let validWordsList: WordsData[] = [
+		{ value: "TEN", isIncluded: false },
+		{ value: "TENS", isIncluded: false },
+		{ value: "TEA", isIncluded: false },
+		{ value: "CAN", isIncluded: false },
+		{ value: "CANE", isIncluded: false },
+		{ value: "CANER", isIncluded: false },
+		{ value: "CASE", isIncluded: false },
+		{ value: "SANE", isIncluded: false },
+		{ value: "WANT", isIncluded: false },
+		{ value: "WANE", isIncluded: false },
+		{ value: "WANES", isIncluded: false },
+		{ value: "SET", isIncluded: false },
+		{ value: "MAN", isIncluded: false },
+		{ value: "MANE", isIncluded: false },
+		{ value: "MANES", isIncluded: false },
+		{ value: "MANS", isIncluded: false },
+		{ value: "SENT", isIncluded: false },
+		{ value: "TAN", isIncluded: false },
+		{ value: "TANS", isIncluded: false },
+		{ value: "MON", isIncluded: false },
+		{ value: "MONS", isIncluded: false },
+		{ value: "RED", isIncluded: false },
+		{ value: "NOG", isIncluded: false },
+		{ value: "NAME", isIncluded: false },
+		{ value: "NAMER", isIncluded: false },
+		{ value: "SAME", isIncluded: false },
+		{ value: "SAMER", isIncluded: false },
+		{ value: "SEAM", isIncluded: false },
+		{ value: "SEAMER", isIncluded: false },
 	];
 
 	const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
 	const [currentWord, setCurrentWord] = useState<string>("");
 	const [gameData, setGameData] = useState<Data[]>(originalData);
+	const [validWordsData, setValidWordsData] =
+		useState<WordsData[]>(validWordsList);
 
 	document.addEventListener("mousedown", () => {
 		setIsMouseDown(true);
@@ -60,19 +99,45 @@ function Game() {
 		}
 	};
 
+	const checkWordValidity = (word: string) => {
+		let tempWordsList = validWordsData;
+		let foundIndex = tempWordsList.findIndex((list) => list.value === word);
+
+		if (foundIndex != -1) {
+			if (!tempWordsList[foundIndex].isIncluded) {
+				tempWordsList[foundIndex].isIncluded = true;
+				setValidWordsData(tempWordsList);
+				return 1;
+			} else return 2;
+		}
+		return 0;
+	};
+
 	const endWordAndReset = (data: Data) => {
-		console.log(currentWord);
 		let boxElements = document.querySelectorAll(".game-box");
+		let validStatus = checkWordValidity(currentWord);
 
 		let boxElementsArray = Array.prototype.slice.call(boxElements);
 		boxElementsArray.map((box) => {
 			if (box.classList.contains("bg-teal-200")) {
 				box.classList.remove("bg-teal-200");
-				box.classList.add("hover:bg-violet-400");
+				if (validStatus == 1) box.classList.add("bg-emerald-400");
+				else if (validStatus == 2) box.classList.add("bg-amber-200");
+				else box.classList.add("bg-red-400");
+
+				setTimeout(() => {
+					box.classList.remove("bg-emerald-400");
+					box.classList.remove("bg-amber-200");
+					box.classList.remove("bg-red-400");
+					box.classList.add("bg-blue-400");
+					box.classList.add("hover:bg-violet-400");
+				}, 400);
 			}
 		});
-		setCurrentWord("");
-		setGameData(originalData);
+		setTimeout(() => {
+			setCurrentWord("");
+			setGameData(originalData);
+		}, 400);
 	};
 
 	return (
