@@ -71,6 +71,8 @@ function Game() {
 	const [gameData, setGameData] = useState<Data[]>(originalData);
 	const [validWordsData, setValidWordsData] =
 		useState<WordsData[]>(validWordsList);
+	const [currentWordScore, setCurrentWordScore] = useState<number>(0);
+	const [gameScore, setGameScore] = useState<number>(0);
 
 	document.addEventListener("mousedown", () => {
 		setIsMouseDown(true);
@@ -96,6 +98,8 @@ function Game() {
 			]);
 			let newWord = currentWord.concat(data.letter);
 			setCurrentWord(newWord);
+			let tempScore = currentWordScore + data.value;
+			setCurrentWordScore(tempScore);
 		}
 	};
 
@@ -116,6 +120,7 @@ function Game() {
 	const endWordAndReset = (data: Data) => {
 		let boxElements = document.querySelectorAll(".game-box");
 		let validStatus = checkWordValidity(currentWord);
+		let tempScore = gameScore;
 
 		let boxElementsArray = Array.prototype.slice.call(boxElements);
 		boxElementsArray.map((box) => {
@@ -135,6 +140,9 @@ function Game() {
 			}
 		});
 		setTimeout(() => {
+			if (validStatus == 1) tempScore += currentWordScore;
+			setGameScore(tempScore);
+			setCurrentWordScore(0);
 			setCurrentWord("");
 			setGameData(originalData);
 		}, 400);
@@ -142,7 +150,7 @@ function Game() {
 
 	return (
 		<div className="flex justify-center items-center flex-col gap-5">
-			<WordDisplay word={currentWord} />
+			<WordDisplay word={currentWord} score={gameScore} />
 			<div className="grid grid-cols-4 gap-1.5">
 				{gameData.map((data) => {
 					return (
