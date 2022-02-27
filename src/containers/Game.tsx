@@ -7,6 +7,7 @@ import accepted_word_sound from "../assets/sounds/accepted_word.mp3";
 import invalid_word_sound from "../assets/sounds/invalid_word.mp3";
 import bonus1_sound from "../assets/sounds/bonus1.mp3";
 import useSound from "use-sound";
+import { originalData, solutionData } from "../assets/data/GameDataSource";
 
 function Game() {
 	interface Data {
@@ -21,56 +22,14 @@ function Game() {
 		isIncluded: boolean;
 	}
 
-	let originalData: Data[] = [
-		{ id: 0, letter: "C", value: 3, isIncluded: false },
-		{ id: 1, letter: "S", value: 2, isIncluded: false },
-		{ id: 2, letter: "E", value: 1, isIncluded: false },
-		{ id: 3, letter: "T", value: 2, isIncluded: false },
-		{ id: 4, letter: "W", value: 6, isIncluded: false },
-		{ id: 5, letter: "A", value: 2, isIncluded: false },
-		{ id: 6, letter: "N", value: 2, isIncluded: false },
-		{ id: 7, letter: "A", value: 2, isIncluded: false },
-		{ id: 8, letter: "O", value: 2, isIncluded: false },
-		{ id: 9, letter: "M", value: 4, isIncluded: false },
-		{ id: 10, letter: "O", value: 2, isIncluded: false },
-		{ id: 11, letter: "E", value: 1, isIncluded: false },
-		{ id: 12, letter: "D", value: 3, isIncluded: false },
-		{ id: 13, letter: "E", value: 1, isIncluded: false },
-		{ id: 14, letter: "R", value: 2, isIncluded: false },
-		{ id: 15, letter: "G", value: 4, isIncluded: false },
-	];
+	let validWordsList: Array<WordsData> = [];
 
-	let validWordsList: WordsData[] = [
-		{ value: "TEN", isIncluded: false },
-		{ value: "TENS", isIncluded: false },
-		{ value: "TEA", isIncluded: false },
-		{ value: "CAN", isIncluded: false },
-		{ value: "CANE", isIncluded: false },
-		{ value: "CANER", isIncluded: false },
-		{ value: "CASE", isIncluded: false },
-		{ value: "SANE", isIncluded: false },
-		{ value: "WANT", isIncluded: false },
-		{ value: "WANE", isIncluded: false },
-		{ value: "WANES", isIncluded: false },
-		{ value: "SET", isIncluded: false },
-		{ value: "MAN", isIncluded: false },
-		{ value: "MANE", isIncluded: false },
-		{ value: "MANES", isIncluded: false },
-		{ value: "MANS", isIncluded: false },
-		{ value: "SENT", isIncluded: false },
-		{ value: "TAN", isIncluded: false },
-		{ value: "TANS", isIncluded: false },
-		{ value: "MON", isIncluded: false },
-		{ value: "MONS", isIncluded: false },
-		{ value: "RED", isIncluded: false },
-		{ value: "NOG", isIncluded: false },
-		{ value: "NAME", isIncluded: false },
-		{ value: "NAMER", isIncluded: false },
-		{ value: "SAME", isIncluded: false },
-		{ value: "SAMER", isIncluded: false },
-		{ value: "SEAM", isIncluded: false },
-		{ value: "SEAMER", isIncluded: false },
-	];
+	solutionData.map((solution) => {
+		validWordsList.push({
+			value: solution.toUpperCase(),
+			isIncluded: false,
+		});
+	});
 
 	const [playLetterSelectorSound] = useSound(letter_selector_sound);
 	const [playAlreadyPresentSound] = useSound(already_present_sound);
