@@ -30,10 +30,12 @@ function Game() {
 	let validWordsList: Array<WordsData> = [];
 
 	solutionData.map((solution) => {
-		validWordsList.push({
-			value: solution.toUpperCase(),
-			isIncluded: false,
-		});
+		if (solution.length > 2) {
+			validWordsList.push({
+				value: solution.toUpperCase(),
+				isIncluded: false,
+			});
+		}
 	});
 
 	const [playLetterSelectorSound] = useSound(letter_selector_sound);
@@ -171,11 +173,11 @@ function Game() {
 	};
 
 	const endWordAndReset = (alarm: any) => {
-		let boxElements = document.querySelectorAll(".game-box");
-		console.log(currentWord);
-
 		let validStatus = checkWordValidity(currentWord);
 		let tempScore = gameScore;
+
+		let boxElements = document.querySelectorAll(".game-box");
+		console.log(currentWord);
 
 		let boxElementsArray = Array.prototype.slice.call(boxElements);
 		boxElementsArray.map((box) => {
@@ -200,10 +202,10 @@ function Game() {
 		let specialComments: HTMLElement | null =
 			document.querySelector(".special-comments");
 
-		if (alarm) {
+		if (alarm && currentWord.length > 2) {
 			if (validStatus == 0) playInvalidWordSound();
 			if (validStatus == 1) {
-				if (currentWordScore >= 20 || currentWord.length > 4) {
+				if (currentWordScore >= 16 || currentWord.length > 5) {
 					playBonusSound();
 					if (specialComments) {
 						specialComments.classList.remove("scale-0");
