@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GameBox from "../components/GameBox";
 import WordDisplay from "../components/WordDisplay";
 import letter_selector_sound from "../assets/sounds/letter_selector.mp3";
@@ -22,6 +22,11 @@ function Game() {
 		isIncluded: boolean;
 	}
 
+	interface Events {
+		id: number;
+		order: number;
+	}
+
 	let validWordsList: Array<WordsData> = [];
 
 	solutionData.map((solution) => {
@@ -38,6 +43,7 @@ function Game() {
 	const [playBonusSound] = useSound(bonus1_sound);
 
 	const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
+	const [isTouchActive, setIsTouchActive] = useState(false);
 	const [currentWord, setCurrentWord] = useState<string>("");
 	const [gameData, setGameData] = useState<Data[]>(originalData);
 	const [validWordsData, setValidWordsData] =
@@ -51,8 +57,14 @@ function Game() {
 	document.addEventListener("mouseup", () => {
 		setIsMouseDown(false);
 	});
+	document.addEventListener("touchstart", () => {
+		setIsTouchActive(true);
+	});
+	document.addEventListener("touchend", () => {
+		setIsTouchActive(false);
+	});
 
-	const updateState = (id: number) => {
+	const updateState = (id: number, alarm: any) => {
 		let data = { ...gameData[id] };
 		if (!data.isIncluded) {
 			let newData = { ...gameData[id] };
@@ -61,18 +73,88 @@ function Game() {
 				...gameData[data.id],
 				isIncluded: true,
 			};
-			playLetterSelectorSound();
 			setGameData([
 				...gameData.slice(0, data.id),
 				newData,
 				...gameData.slice(data.id + 1),
 			]);
+			if (alarm) playLetterSelectorSound();
+
 			let newWord = currentWord.concat(data.letter);
 			setCurrentWord(newWord);
 			let tempScore = currentWordScore + data.value;
 			setCurrentWordScore(tempScore);
 		}
 	};
+
+	useEffect(() => {
+		let selectedBoxes = document.querySelectorAll(".selected-box");
+		let selectedBoxesArray = Array.prototype.slice.call(selectedBoxes);
+		let boxEvents: Events[] = [];
+		selectedBoxesArray.map((box) => {
+			let id = box.getAttribute("data-id");
+			let order = box.getAttribute("data-order");
+			boxEvents.push({ id, order: parseInt(order) });
+		});
+		boxEvents.sort((a, b) => (a.order < b.order ? 1 : -1));
+		boxEvents.map((box) => {
+			updateState(box.id, false);
+		});
+	});
+
+	useEffect(() => {
+		if (!isTouchActive && currentWord.length != 0) {
+			endWordAndReset(false);
+		}
+	}, [isTouchActive]);
+
+	const getEventZone = (mousePosition: number) => {
+		let index = -1;
+		if (mousePosition / 20 >= 1 && mousePosition / 20 <= 4) index = 0;
+		else if (mousePosition / 20 >= 5 && mousePosition / 20 <= 8) index = 1;
+		else if (mousePosition / 20 >= 9 && mousePosition / 20 <= 12) index = 2;
+		else if (mousePosition / 20 >= 14 && mousePosition / 20 <= 17)
+			index = 3;
+		else index = -1;
+		return index;
+	};
+
+	const getBoxIdByEventCoords = (x: number, y: number) => {
+		if (x == -1 || y == -1) return null;
+		return x * 4 + y;
+	};
+
+	let gameBox: HTMLElement | null = document.querySelector(".game-box");
+
+	// useEffect(() => {
+	// 	if (gameBox) {
+	// 		gameBox.addEventListener("touchmove", (event) => {
+	// 			if (gameBox) {
+	// 				let mouseX = event.touches[0].clientX - gameBox.offsetLeft,
+	// 					mouseY = event.touches[0].clientY - gameBox.offsetTop;
+	// 				// console.log(mouseX);
+	// 				let indexX = getEventZone(mouseY);
+	// 				let indexY = getEventZone(mouseX);
+	// 				let boxId = getBoxIdByEventCoords(indexX, indexY);
+	// 				// console.log(boxId);
+
+	// 				if (boxId != null && !gameData[boxId].isIncluded) {
+	// 					let currentBox: HTMLElement | null =
+	// 						document.getElementById(`box-${boxId}`);
+	// 					if (currentBox) {
+	// 						currentBox.classList.remove("bg-blue-400");
+	// 						currentBox.classList.remove("hover:bg-violet-400");
+	// 						currentBox.classList.add("bg-teal-200");
+	// 						updateState(boxId);
+	// 					}
+	// 				}
+	// 			}
+	// 		});
+	// 		gameBox.addEventListener("touchend", (event) => {
+	// 			endWordAndReset();
+	// 		});
+	// 	}
+	// }, [gameBox]);
 
 	const checkWordValidity = (word: string) => {
 		let tempWordsList = validWordsData;
@@ -88,8 +170,10 @@ function Game() {
 		return 0;
 	};
 
-	const endWordAndReset = (data: Data) => {
+	const endWordAndReset = (alarm: any) => {
 		let boxElements = document.querySelectorAll(".game-box");
+		console.log(currentWord);
+
 		let validStatus = checkWordValidity(currentWord);
 		let tempScore = gameScore;
 
@@ -107,6 +191,8 @@ function Game() {
 					box.classList.remove("bg-red-400");
 					box.classList.add("bg-blue-400");
 					box.classList.add("hover:bg-violet-400");
+					box.classList.remove("selected-box");
+					box.removeAttribute("data-order");
 				}, 400);
 			}
 		});
@@ -114,24 +200,27 @@ function Game() {
 		let specialComments: HTMLElement | null =
 			document.querySelector(".special-comments");
 
-		if (validStatus == 0) playInvalidWordSound();
-		if (validStatus == 1) {
-			tempScore += currentWordScore;
-			if (currentWordScore >= 20 || currentWord.length > 4) {
-				playBonusSound();
-				if (specialComments) {
-					specialComments.classList.remove("scale-0");
-					specialComments.classList.add("scale-1");
-				}
-			} else playAcceptedWordSound();
+		if (alarm) {
+			if (validStatus == 0) playInvalidWordSound();
+			if (validStatus == 1) {
+				if (currentWordScore >= 20 || currentWord.length > 4) {
+					playBonusSound();
+					if (specialComments) {
+						specialComments.classList.remove("scale-0");
+						specialComments.classList.add("scale-1");
+					}
+				} else playAcceptedWordSound();
+			}
+			if (validStatus == 2) playAlreadyPresentSound();
 		}
-		if (validStatus == 2) playAlreadyPresentSound();
 
 		setTimeout(() => {
 			if (specialComments) {
 				specialComments.classList.remove("scale-1");
 				specialComments.classList.add("scale-0");
 			}
+			if (validStatus == 1) tempScore += currentWordScore;
+
 			setGameScore(tempScore);
 			setCurrentWordScore(0);
 			setCurrentWord("");
@@ -145,23 +234,23 @@ function Game() {
 				className={`special-comments absolute w-full h-full z-10 flex justify-center items-center bg-slate-600/[0.5] rounded-lg	scale-0`}
 			>
 				<div
-					className="font-mono text-4xl rotate-[-5deg] font-bold text-white select-none"
+					className="font-mono text-4xl font-bold text-white select-none"
 					style={{ textShadow: "#FC0 1px 0 10px" }}
 				>
 					Awesome!
 				</div>
 			</div>
 			<WordDisplay word={currentWord} score={gameScore} />
-			<div className="grid grid-cols-4 gap-1.5">
+			<div className="game-box grid grid-cols-4 gap-1.5">
 				{gameData.map((data) => {
 					return (
 						<GameBox
 							key={data.id}
 							endWord={() => {
-								endWordAndReset(data);
+								endWordAndReset(true);
 							}}
 							isMouseDown={isMouseDown}
-							updateState={() => updateState(data.id)}
+							updateState={() => updateState(data.id, true)}
 							{...data}
 						/>
 					);
