@@ -5,6 +5,7 @@ import letter_selector_sound from "../assets/sounds/letter_selector.mp3";
 import already_present_sound from "../assets/sounds/already_present.mp3";
 import accepted_word_sound from "../assets/sounds/accepted_word.mp3";
 import invalid_word_sound from "../assets/sounds/invalid_word.mp3";
+import bonus1_sound from "../assets/sounds/bonus1.mp3";
 import useSound from "use-sound";
 
 function Game() {
@@ -75,6 +76,7 @@ function Game() {
 	const [playAlreadyPresentSound] = useSound(already_present_sound);
 	const [playAcceptedWordSound] = useSound(accepted_word_sound);
 	const [playInvalidWordSound] = useSound(invalid_word_sound);
+	const [playBonusSound] = useSound(bonus1_sound);
 
 	const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
 	const [currentWord, setCurrentWord] = useState<string>("");
@@ -150,12 +152,27 @@ function Game() {
 			}
 		});
 
+		let specialComments: HTMLElement | null =
+			document.querySelector(".special-comments");
+
 		if (validStatus == 0) playInvalidWordSound();
-		if (validStatus == 1) playAcceptedWordSound();
+		if (validStatus == 1) {
+			tempScore += currentWordScore;
+			if (currentWordScore >= 20 || currentWord.length > 4) {
+				playBonusSound();
+				if (specialComments) {
+					specialComments.classList.remove("scale-0");
+					specialComments.classList.add("scale-1");
+				}
+			} else playAcceptedWordSound();
+		}
 		if (validStatus == 2) playAlreadyPresentSound();
 
 		setTimeout(() => {
-			if (validStatus == 1) tempScore += currentWordScore;
+			if (specialComments) {
+				specialComments.classList.remove("scale-1");
+				specialComments.classList.add("scale-0");
+			}
 			setGameScore(tempScore);
 			setCurrentWordScore(0);
 			setCurrentWord("");
@@ -165,6 +182,16 @@ function Game() {
 
 	return (
 		<div className="flex justify-center items-center flex-col gap-5">
+			<div
+				className={`special-comments absolute w-full h-full z-10 flex justify-center items-center bg-slate-600/[0.5] rounded-lg	scale-0`}
+			>
+				<div
+					className="font-mono text-4xl rotate-[-5deg] font-bold text-white select-none"
+					style={{ textShadow: "#FC0 1px 0 10px" }}
+				>
+					Awesome!
+				</div>
+			</div>
 			<WordDisplay word={currentWord} score={gameScore} />
 			<div className="grid grid-cols-4 gap-1.5">
 				{gameData.map((data) => {
