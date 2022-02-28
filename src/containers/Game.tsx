@@ -8,25 +8,9 @@ import invalid_word_sound from "../assets/sounds/invalid_word.mp3";
 import bonus1_sound from "../assets/sounds/bonus1.mp3";
 import useSound from "use-sound";
 import { originalData, solutionData } from "../assets/data/GameDataSource";
+import { WordsData, Data, Events } from "../assets/data/Interfaces";
 
 function Game() {
-	interface Data {
-		id: number;
-		letter: string;
-		value: number;
-		isIncluded: boolean;
-	}
-
-	interface WordsData {
-		value: string;
-		isIncluded: boolean;
-	}
-
-	interface Events {
-		id: number;
-		order: number;
-	}
-
 	let validWordsList: Array<WordsData> = [];
 
 	solutionData.map((solution) => {

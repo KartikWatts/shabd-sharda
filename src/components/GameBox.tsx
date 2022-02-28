@@ -1,19 +1,5 @@
 import React, { useState } from "react";
-
-type DataProps = {
-	id: number;
-	letter: string;
-	value: number;
-	isIncluded: boolean;
-	isMouseDown: boolean;
-	updateState: (id: number) => void;
-	endWord: () => void;
-};
-
-interface Events {
-	id: number;
-	order: number;
-}
+import { DataProps } from "../assets/data/Types";
 
 function GameBox(props: DataProps) {
 	// const [isTouchActive, setIsTouchActive] = useState(false);

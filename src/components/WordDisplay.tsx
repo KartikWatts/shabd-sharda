@@ -1,9 +1,5 @@
 import React from "react";
-
-type WordProps = {
-	word: string;
-	score: number;
-};
+import { WordProps } from "../assets/data/Types";
 
 function WordDisplay(props: WordProps) {
 	return (
