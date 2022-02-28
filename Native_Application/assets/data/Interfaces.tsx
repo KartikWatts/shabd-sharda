@@ -14,3 +14,10 @@ export interface Events {
 	id: number;
 	order: number;
 }
+
+export interface LayoutData {
+	height: number;
+	width: number;
+	x: number;
+	y: number;
+}

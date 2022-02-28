@@ -1,24 +1,36 @@
 import React, { useState } from "react";
 import tw from "twrnc";
-import { View, Text, Dimensions, StyleSheet } from "react-native";
+import {
+	Pressable,
+	View,
+	Text,
+	Dimensions,
+	StyleSheet,
+	GestureResponderEvent,
+} from "react-native";
 import { DataProps } from "../assets/data/Types";
 
 const screen = Dimensions.get("screen");
 
 function GameBox(props: DataProps) {
+	// const handleResponderMove = (e: GestureResponderEvent) => {
+	// 	console.log(props.id);
+	// };
 	return (
-		<View style={{}}>
-			<View
-				style={[
-					styles.boxDimensions,
-					tw`bg-blue-400 rounded-md flex justify-center items-center`,
-				]}
-			>
-				<Text style={[styles.boxValue, tw`absolute top-0 left-1`]}>
-					{props.value}
-				</Text>
-				<Text style={[styles.boxText]}>{props.letter}</Text>
-			</View>
+		<View
+			// onMoveShouldSetResponderCapture={() => {
+			// 	return true;
+			// }}
+			// onResponderMove={handleResponderMove}
+			style={[
+				styles.boxDimensions,
+				tw`bg-blue-400 rounded-md flex justify-center items-center`,
+			]}
+		>
+			<Text style={[styles.boxValue, tw`absolute top-0 left-1`]}>
+				{props.value}
+			</Text>
+			<Text style={[styles.boxText]}>{props.letter}</Text>
 		</View>
 	);
 }
