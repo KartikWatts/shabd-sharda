@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from "react";
 import tw from "twrnc";
-import {
-	View,
-	Text,
-	Dimensions,
-	GestureResponderEvent,
-	StyleSheet,
-} from "react-native";
+import { View, Text, GestureResponderEvent, StyleSheet } from "react-native";
 import { WordsData, Data, LayoutData } from "../assets/data/Interfaces";
 import { originalData, solutionData } from "../assets/data/GameDataSource";
 import GameBox from "../components/GameBox";
 import WordDisplay from "../components/WordDisplay";
 import { ALREADY, CORRECT, SELECTED, WRONG } from "../assets/data/Types";
-
-const screen = Dimensions.get("screen");
-const boxSide = (screen.width - 25 - 5 * 2.5) / 4;
+import { Audio } from "expo-av";
 
 function Game() {
 	let validWordsList: Array<WordsData> = [];
@@ -39,10 +31,61 @@ function Game() {
 		}
 	});
 
+	const [sound, setSound] = useState<Audio.Sound>();
+
+	const playLetterSelectorSound = async () => {
+		const { sound } = await Audio.Sound.createAsync(
+			require("../assets/sounds/letter_selector.mp3")
+		);
+		setSound(sound);
+		await sound.playAsync();
+	};
+
+	const playAlreadyPresentSound = async () => {
+		const { sound } = await Audio.Sound.createAsync(
+			require("../assets/sounds/already_present.mp3")
+		);
+		setSound(sound);
+		await sound.playAsync();
+	};
+
+	const playAcceptedWordSound = async () => {
+		const { sound } = await Audio.Sound.createAsync(
+			require("../assets/sounds/accepted_word.mp3")
+		);
+		setSound(sound);
+		await sound.playAsync();
+	};
+
+	const playInvalidWordSound = async () => {
+		const { sound } = await Audio.Sound.createAsync(
+			require("../assets/sounds/invalid_word.mp3")
+		);
+		setSound(sound);
+		await sound.playAsync();
+	};
+
+	const playBonusSound = async () => {
+		const { sound } = await Audio.Sound.createAsync(
+			require("../assets/sounds/bonus1.mp3")
+		);
+		setSound(sound);
+		await sound.playAsync();
+	};
+
+	useEffect(() => {
+		return sound
+			? () => {
+					sound.unloadAsync();
+			  }
+			: undefined;
+	}, [sound]);
+
 	const updateState = (id: number) => {
 		let data = { ...gameData[id] };
 		let newData = { ...gameData[id] };
 		if (!data.isIncluded) {
+			playLetterSelectorSound();
 			newData = {
 				...gameData[data.id],
 				isIncluded: true,
@@ -120,11 +163,14 @@ function Game() {
 		});
 
 		setGameData(tempData);
+		if (validStatus == 0) playInvalidWordSound();
 		if (validStatus == 1) {
 			if (currentWordScore >= 16 || currentWord.length > 5) {
+				playBonusSound();
 				setIsItAwesome(true);
-			}
+			} else playAcceptedWordSound();
 		}
+		if (validStatus == 2) playAlreadyPresentSound();
 
 		setTimeout(() => {
 			if (validStatus == 1) tempScore += currentWordScore;
