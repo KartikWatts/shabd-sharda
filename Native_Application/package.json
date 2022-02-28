@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "expo": "~44.0.0",
+    "expo-navigation-bar": "~1.1.1",
     "expo-status-bar": "~1.2.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
-    "react-native-web": "0.17.1"
+    "react-native-web": "0.17.1",
+    "twrnc": "^3.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

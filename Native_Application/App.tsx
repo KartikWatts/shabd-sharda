@@ -1,20 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import tw from "twrnc";
+import { View } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import * as NavigationBar from "expo-navigation-bar";
+import Game from "./containers/Game";
+
+NavigationBar.setBackgroundColorAsync("rgb(71, 85, 105)");
+NavigationBar.setBehaviorAsync("overlay-swipe");
+NavigationBar.setVisibilityAsync("hidden");
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+	return (
+		<View
+			style={tw`w-full h-full bg-slate-500 flex justify-center items-center flex-col`}
+		>
+			<Game />
+			<StatusBar hidden={true} />
+		</View>
+	);
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
