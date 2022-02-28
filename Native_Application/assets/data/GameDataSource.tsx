@@ -1,20 +1,22 @@
+import { DEFAULT } from "./Types";
+
 let originalData = [
-	{ id: 0, letter: "C", value: 3, isIncluded: false },
-	{ id: 1, letter: "S", value: 2, isIncluded: false },
-	{ id: 2, letter: "E", value: 1, isIncluded: false },
-	{ id: 3, letter: "T", value: 2, isIncluded: false },
-	{ id: 4, letter: "W", value: 6, isIncluded: false },
-	{ id: 5, letter: "A", value: 2, isIncluded: false },
-	{ id: 6, letter: "N", value: 2, isIncluded: false },
-	{ id: 7, letter: "A", value: 2, isIncluded: false },
-	{ id: 8, letter: "O", value: 2, isIncluded: false },
-	{ id: 9, letter: "M", value: 4, isIncluded: false },
-	{ id: 10, letter: "O", value: 2, isIncluded: false },
-	{ id: 11, letter: "E", value: 1, isIncluded: false },
-	{ id: 12, letter: "D", value: 3, isIncluded: false },
-	{ id: 13, letter: "E", value: 1, isIncluded: false },
-	{ id: 14, letter: "R", value: 2, isIncluded: false },
-	{ id: 15, letter: "G", value: 4, isIncluded: false },
+	{ id: 0, letter: "C", value: 3, isIncluded: false, tileState: DEFAULT },
+	{ id: 1, letter: "S", value: 2, isIncluded: false, tileState: DEFAULT },
+	{ id: 2, letter: "E", value: 1, isIncluded: false, tileState: DEFAULT },
+	{ id: 3, letter: "T", value: 2, isIncluded: false, tileState: DEFAULT },
+	{ id: 4, letter: "W", value: 6, isIncluded: false, tileState: DEFAULT },
+	{ id: 5, letter: "A", value: 2, isIncluded: false, tileState: DEFAULT },
+	{ id: 6, letter: "N", value: 2, isIncluded: false, tileState: DEFAULT },
+	{ id: 7, letter: "A", value: 2, isIncluded: false, tileState: DEFAULT },
+	{ id: 8, letter: "O", value: 2, isIncluded: false, tileState: DEFAULT },
+	{ id: 9, letter: "M", value: 4, isIncluded: false, tileState: DEFAULT },
+	{ id: 10, letter: "O", value: 2, isIncluded: false, tileState: DEFAULT },
+	{ id: 11, letter: "E", value: 1, isIncluded: false, tileState: DEFAULT },
+	{ id: 12, letter: "D", value: 3, isIncluded: false, tileState: DEFAULT },
+	{ id: 13, letter: "E", value: 1, isIncluded: false, tileState: DEFAULT },
+	{ id: 14, letter: "R", value: 2, isIncluded: false, tileState: DEFAULT },
+	{ id: 15, letter: "G", value: 4, isIncluded: false, tileState: DEFAULT },
 ];
 
 let solutionData = [

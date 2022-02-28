@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import tw from "twrnc";
-import { View, Dimensions } from "react-native";
+import { View, Dimensions, GestureResponderEvent } from "react-native";
 import { WordsData, Data, LayoutData } from "../assets/data/Interfaces";
 import { originalData, solutionData } from "../assets/data/GameDataSource";
 import GameBox from "../components/GameBox";
 import WordDisplay from "../components/WordDisplay";
+import { ALREADY, CORRECT, SELECTED, WRONG } from "../assets/data/Types";
 
 const screen = Dimensions.get("screen");
 const boxSide = (screen.width - 25 - 5 * 2.5) / 4;
@@ -38,7 +39,9 @@ function Game() {
 			newData = {
 				...gameData[data.id],
 				isIncluded: true,
+				tileState: SELECTED,
 			};
+
 			setGameData([
 				...gameData.slice(0, data.id),
 				newData,
@@ -82,6 +85,51 @@ function Game() {
 		return 0;
 	};
 
+	const handelTouchMove = (e: GestureResponderEvent) => {
+		if (deviceDimension) {
+			let boxX = Math.floor(e.nativeEvent.pageY - deviceDimension.y);
+			let boxY = Math.floor(e.nativeEvent.pageX - deviceDimension.x);
+			let indexX = getEventZone(boxX);
+			let indexY = getEventZone(boxY);
+			let boxId = getBoxIdByEventCoords(indexX, indexY);
+			if (boxId != null) updateState(boxId);
+		}
+	};
+
+	useEffect(() => {}, [gameData]);
+
+	const handleTouchEnd = () => {
+		let validStatus = checkWordValidity(currentWord);
+		let tempScore = gameScore;
+		let tempData = gameData;
+
+		tempData.map((data) => {
+			if (data.isIncluded) {
+				if (validStatus == 1) tempData[data.id].tileState = CORRECT;
+				else if (validStatus == 2)
+					tempData[data.id].tileState = ALREADY;
+				else tempData[data.id].tileState = WRONG;
+			}
+		});
+
+		// console.log(tempData);
+
+		setGameData(tempData);
+		setTimeout(() => {
+			if (validStatus == 1) tempScore += currentWordScore;
+			console.log(currentWord);
+			console.log("Score: ", currentWordScore);
+
+			setGameScore(tempScore);
+			setCurrentWordScore(0);
+			setCurrentWord("");
+		}, 5);
+
+		setTimeout(() => {
+			setGameData(originalData);
+		}, 400);
+	};
+
 	return (
 		<View
 			style={tw`flex justify-center items-center flex-col w-full h-full`}
@@ -93,37 +141,10 @@ function Game() {
 					setDeviceDimension(nativeEvent.layout);
 				}}
 				onTouchMove={(e) => {
-					if (deviceDimension) {
-						let boxX = Math.floor(
-							e.nativeEvent.pageY - deviceDimension.y
-						);
-						let boxY = Math.floor(
-							e.nativeEvent.pageX - deviceDimension.x
-						);
-						let indexX = getEventZone(boxX);
-						let indexY = getEventZone(boxY);
-						let boxId = getBoxIdByEventCoords(indexX, indexY);
-						if (boxId != null) updateState(boxId);
-					}
-				}}
-				onTouchStart={() => {
-					console.log("Touch Started");
+					handelTouchMove(e);
 				}}
 				onTouchEnd={() => {
-					console.log("Touch Ended");
-					let validStatus = checkWordValidity(currentWord);
-					let tempScore = gameScore;
-
-					setTimeout(() => {
-						if (validStatus == 1) tempScore += currentWordScore;
-						console.log(currentWord);
-						console.log("Score: ", currentWordScore);
-
-						setGameScore(tempScore);
-						setCurrentWordScore(0);
-						setCurrentWord("");
-						setGameData(originalData);
-					}, 300);
+					handleTouchEnd();
 				}}
 				style={tw`flex flex-row justify-center items-center w-full flex-wrap`}
 			>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import tw from "twrnc";
 import {
 	Pressable,
@@ -8,23 +8,45 @@ import {
 	StyleSheet,
 	GestureResponderEvent,
 } from "react-native";
-import { DataProps } from "../assets/data/Types";
+import {
+	ALREADY,
+	CORRECT,
+	DataProps,
+	DEFAULT,
+	SELECTED,
+	WRONG,
+} from "../assets/data/Types";
 
 const screen = Dimensions.get("screen");
 
 function GameBox(props: DataProps) {
-	// const handleResponderMove = (e: GestureResponderEvent) => {
-	// 	console.log(props.id);
-	// };
+	const getBoxColorFromState = (state: number) => {
+		switch (state) {
+			case SELECTED:
+				return `bg-teal-200`;
+			case CORRECT:
+				return `bg-emerald-400`;
+			case ALREADY:
+				return `bg-amber-200`;
+			case WRONG:
+				return `bg-red-400`;
+			default:
+				return `bg-blue-400`;
+		}
+	};
+
+	const [tileColor, setTileColor] = useState(getBoxColorFromState(DEFAULT));
+
+	useEffect(() => {
+		setTileColor(getBoxColorFromState(props.tileState));
+	}, [props.tileState]);
+
 	return (
 		<View
-			// onMoveShouldSetResponderCapture={() => {
-			// 	return true;
-			// }}
-			// onResponderMove={handleResponderMove}
 			style={[
 				styles.boxDimensions,
-				tw`bg-blue-400 rounded-md flex justify-center items-center`,
+				tw`rounded-md flex justify-center items-center`,
+				tw`${tileColor}`,
 			]}
 		>
 			<Text style={[styles.boxValue, tw`absolute top-0 left-1`]}>

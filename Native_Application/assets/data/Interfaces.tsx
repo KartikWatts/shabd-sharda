@@ -3,6 +3,7 @@ export interface Data {
 	letter: string;
 	value: number;
 	isIncluded: boolean;
+	tileState: number;
 }
 
 export interface WordsData {
