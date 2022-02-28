@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import tw from "twrnc";
-import { View, Dimensions, GestureResponderEvent } from "react-native";
+import {
+	View,
+	Text,
+	Dimensions,
+	GestureResponderEvent,
+	StyleSheet,
+} from "react-native";
 import { WordsData, Data, LayoutData } from "../assets/data/Interfaces";
 import { originalData, solutionData } from "../assets/data/GameDataSource";
 import GameBox from "../components/GameBox";
@@ -22,6 +28,7 @@ function Game() {
 	const [deviceDimension, setDeviceDimension] = useState<LayoutData | null>(
 		null
 	);
+	const [isItAwesome, setIsItAwesome] = useState<boolean>(false);
 
 	solutionData.map((solution) => {
 		if (solution.length > 2) {
@@ -112,9 +119,13 @@ function Game() {
 			}
 		});
 
-		// console.log(tempData);
-
 		setGameData(tempData);
+		if (validStatus == 1) {
+			if (currentWordScore >= 16 || currentWord.length > 5) {
+				setIsItAwesome(true);
+			}
+		}
+
 		setTimeout(() => {
 			if (validStatus == 1) tempScore += currentWordScore;
 			console.log(currentWord);
@@ -126,6 +137,7 @@ function Game() {
 		}, 5);
 
 		setTimeout(() => {
+			setIsItAwesome(false);
 			setGameData(originalData);
 		}, 400);
 	};
@@ -134,6 +146,28 @@ function Game() {
 		<View
 			style={tw`flex justify-center items-center flex-col w-full h-full`}
 		>
+			<View
+				style={[
+					isItAwesome
+						? {
+								opacity: 1,
+								backgroundColor: "rgba(0,0,0,0.3)",
+								zIndex: 10,
+						  }
+						: { opacity: 0, zIndex: 0 },
+					tw`absolute w-full h-full flex justify-center items-center rounded-lg`,
+				]}
+			>
+				<Text
+					style={[
+						styles.awesomeText,
+						tw`text-3xl font-bold text-white`,
+					]}
+				>
+					Awesome!
+				</Text>
+			</View>
+
 			<WordDisplay word={currentWord} score={gameScore} />
 
 			<View
@@ -155,5 +189,13 @@ function Game() {
 		</View>
 	);
 }
+
+const styles = StyleSheet.create({
+	awesomeText: {
+		textShadowColor: "#FC0",
+		textShadowOffset: { width: -1, height: 0 },
+		textShadowRadius: 10,
+	},
+});
 
 export default Game;
