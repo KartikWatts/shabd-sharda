@@ -85,7 +85,9 @@ function Game() {
 		let data = { ...gameData[id] };
 		let newData = { ...gameData[id] };
 		if (!data.isIncluded) {
-			playLetterSelectorSound();
+			setTimeout(() => {
+				playLetterSelectorSound();
+			}, 10);
 			newData = {
 				...gameData[data.id],
 				isIncluded: true,
@@ -224,7 +226,9 @@ function Game() {
 					handelTouchMove(e);
 				}}
 				onTouchEnd={() => {
-					handleTouchEnd();
+					setTimeout(() => {
+						handleTouchEnd();
+					}, 10);
 				}}
 				style={tw`flex flex-row justify-center items-center w-full flex-wrap`}
 			>
