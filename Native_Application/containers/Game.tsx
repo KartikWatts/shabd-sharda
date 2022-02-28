@@ -4,6 +4,7 @@ import { View, Dimensions } from "react-native";
 import { WordsData, Data, LayoutData } from "../assets/data/Interfaces";
 import { originalData, solutionData } from "../assets/data/GameDataSource";
 import GameBox from "../components/GameBox";
+import WordDisplay from "../components/WordDisplay";
 
 const screen = Dimensions.get("screen");
 const boxSide = (screen.width - 25 - 5 * 2.5) / 4;
@@ -85,6 +86,8 @@ function Game() {
 		<View
 			style={tw`flex justify-center items-center flex-col w-full h-full`}
 		>
+			<WordDisplay word={currentWord} score={gameScore} />
+
 			<View
 				onLayout={({ nativeEvent }) => {
 					setDeviceDimension(nativeEvent.layout);
@@ -120,7 +123,7 @@ function Game() {
 						setCurrentWordScore(0);
 						setCurrentWord("");
 						setGameData(originalData);
-					}, 400);
+					}, 300);
 				}}
 				style={tw`flex flex-row justify-center items-center w-full flex-wrap`}
 			>
