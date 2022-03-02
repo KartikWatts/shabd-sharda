@@ -1,10 +1,10 @@
-# Shabd Sharda Web App
+# Shabd Sharda Native App
 
-This Project is hosted at [https://kartikwatts.github.io/shabd-sharda](https://kartikwatts.github.io/shabd-sharda).
+This Project is hosted at [https://expo.dev/@kartikwatts/shabd-sharda](https://expo.dev/@kartikwatts/shabd-sharda).
 
 ## Contribute/ Run Locally
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Expo](https://github.com/expo/expo).
 
 ### Available Scripts
 
@@ -13,15 +13,18 @@ In the project directory, you can run:
 #### `yarn start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+#### `yarn android`
 
-#### `yarn test`
+Launches the test runner for android.\
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### `yarn ios`
+
+Launches the test runner for ios.\
+
+#### `yarn web`
+
+Launches the test runner for web.\
 
 #### `yarn build`
 
@@ -45,6 +48,6 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ### Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+You can learn more in the [Expo documentation](https://docs.expo.dev/).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+To learn React Native, check out the [React Native documentation](https://reactnative.dev/).
