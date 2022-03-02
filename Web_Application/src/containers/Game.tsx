@@ -64,6 +64,9 @@ function Game() {
 				newData,
 				...gameData.slice(data.id + 1),
 			]);
+			// TODO:: FIX FOR SOUNDS
+			// console.log("playing sound");
+
 			if (alarm) playLetterSelectorSound();
 
 			let newWord = currentWord.concat(data.letter);
@@ -72,27 +75,6 @@ function Game() {
 			setCurrentWordScore(tempScore);
 		}
 	};
-
-	useEffect(() => {
-		let selectedBoxes = document.querySelectorAll(".selected-box");
-		let selectedBoxesArray = Array.prototype.slice.call(selectedBoxes);
-		let boxEvents: Events[] = [];
-		selectedBoxesArray.map((box) => {
-			let id = box.getAttribute("data-id");
-			let order = box.getAttribute("data-order");
-			boxEvents.push({ id, order: parseInt(order) });
-		});
-		boxEvents.sort((a, b) => (a.order < b.order ? 1 : -1));
-		boxEvents.map((box) => {
-			updateState(box.id, false);
-		});
-	});
-
-	useEffect(() => {
-		if (!isTouchActive && currentWord.length != 0) {
-			endWordAndReset(false);
-		}
-	}, [isTouchActive]);
 
 	const getEventZone = (mousePosition: number) => {
 		let index = -1;
@@ -111,36 +93,6 @@ function Game() {
 	};
 
 	let gameBox: HTMLElement | null = document.querySelector(".game-box");
-
-	// useEffect(() => {
-	// 	if (gameBox) {
-	// 		gameBox.addEventListener("touchmove", (event) => {
-	// 			if (gameBox) {
-	// 				let mouseX = event.touches[0].clientX - gameBox.offsetLeft,
-	// 					mouseY = event.touches[0].clientY - gameBox.offsetTop;
-	// 				// console.log(mouseX);
-	// 				let indexX = getEventZone(mouseY);
-	// 				let indexY = getEventZone(mouseX);
-	// 				let boxId = getBoxIdByEventCoords(indexX, indexY);
-	// 				// console.log(boxId);
-
-	// 				if (boxId != null && !gameData[boxId].isIncluded) {
-	// 					let currentBox: HTMLElement | null =
-	// 						document.getElementById(`box-${boxId}`);
-	// 					if (currentBox) {
-	// 						currentBox.classList.remove("bg-blue-400");
-	// 						currentBox.classList.remove("hover:bg-violet-400");
-	// 						currentBox.classList.add("bg-teal-200");
-	// 						updateState(boxId);
-	// 					}
-	// 				}
-	// 			}
-	// 		});
-	// 		gameBox.addEventListener("touchend", (event) => {
-	// 			endWordAndReset();
-	// 		});
-	// 	}
-	// }, [gameBox]);
 
 	const checkWordValidity = (word: string) => {
 		let tempWordsList = validWordsData;
@@ -214,6 +166,29 @@ function Game() {
 		}, 400);
 	};
 
+	const handelTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+		if (gameBox) {
+			let mouseX = event.touches[0].clientX - gameBox.offsetLeft,
+				mouseY = event.touches[0].clientY - gameBox.offsetTop;
+			// console.log(mouseX);
+			let indexX = getEventZone(mouseY);
+			let indexY = getEventZone(mouseX);
+			let boxId = getBoxIdByEventCoords(indexX, indexY);
+
+			if (boxId != null && !gameData[boxId].isIncluded) {
+				let currentBox: HTMLElement | null = document.getElementById(
+					`box-${boxId}`
+				);
+				if (currentBox) {
+					currentBox.classList.remove("bg-blue-400");
+					currentBox.classList.remove("hover:bg-violet-400");
+					currentBox.classList.add("bg-teal-200");
+					updateState(boxId, true);
+				}
+			}
+		}
+	};
+
 	return (
 		<div className="flex justify-center items-center flex-col gap-5">
 			<div
@@ -227,7 +202,17 @@ function Game() {
 				</div>
 			</div>
 			<WordDisplay word={currentWord} score={gameScore} />
-			<div className="game-box grid grid-cols-4 gap-1.5">
+			<div
+				className="game-box grid grid-cols-4 gap-1.5"
+				onTouchMove={(e) => {
+					handelTouchMove(e);
+				}}
+				onTouchEnd={() => {
+					setTimeout(() => {
+						endWordAndReset(true);
+					}, 10);
+				}}
+			>
 				{gameData.map((data) => {
 					return (
 						<GameBox
