@@ -18,7 +18,7 @@ jobs:
               uses: actions/checkout@v2
 
             - name: Install and Build 🔧
-              run: yarn install && yarn run build
+              run: cd Web_Application && yarn install && yarn run build
 
             - name: Deploy 🚀
               uses: JamesIves/github-pages-deploy-action@4.1.7
