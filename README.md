@@ -6,14 +6,14 @@
 <img src="./Assets/Images/Shabd-Sharda-App-Icon.png" alt="Shabd Sharda" width="300" height="300" />
 </p>
 
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/KartikWatts/shabd-sharda/issues)
 
 ## About
 
 #### This is a Word Search Game inspired from Wordament (A game I have been passively playing from years. Based on [Boggle](https://en.wikipedia.org/wiki/Boggle) )
 
 <b>[Shabd (शब्द)](https://en.wikipedia.org/wiki/Shabda)</b> is a Sanskrit word for <b>Word</b> (Speech Sound)<br>
-<b>[Sharda (शारदा)]</b> is a Sanskrit word for <b>[Goddess Saraswati](https://en.wikipedia.org/wiki/Saraswati)</b> (Hindu Goddess of Wisdom)
+<b>Sharda (शारदा)</b> is a Sanskrit word for <b>[Goddess Saraswati](https://en.wikipedia.org/wiki/Saraswati)</b> (Hindu Goddess of Wisdom)
 
 <p>During the recent Wordle hype, getting reconnected to love for the word games again, I thought of creating a game of myself. <br>[TODO: abhi kuch dimag me nhi a rha, baad me update karunga vro]</p>
 
