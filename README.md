@@ -30,9 +30,9 @@ Any contribution is really appreciated as it encourages and help the project to 
 
 The Project has three main directories:
 
--   [Web Application](https://github.com/KartikWatts/shabd-sharda/Web_Application)
--   [Native Application](https://github.com/KartikWatts/shabd-sharda/Native_Application)
--   [Game Data Script](https://github.com/KartikWatts/shabd-sharda/Game_Data_Script_Python)
+-   [Web Application](https://github.com/KartikWatts/shabd-sharda/tree/master/Web_Application)
+-   [Native Application](https://github.com/KartikWatts/shabd-sharda/tree/master/Native_Application)
+-   [Game Data Script](https://github.com/KartikWatts/shabd-sharda/tree/master/Game_Data_Script_Python)
 
 All the required details for the specific project can be found in corresponding ReadMe files.
 You can follow the instructions and start developing from there on.
@@ -68,7 +68,7 @@ In short, when you submit code changes, your submissions are understood to be un
 
 ### Report bugs using Github's [issues](https://github.com/KartikWatts/shabd-sharda/issues)
 
-We use GitHub issues to track public bugs. Report a bug by [opening a new issue](); it's that easy!
+We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/KartikWatts/shabd-sharda/issues/new); it's that easy!
 
 ### Write bug reports with detail, background, and sample code
 
