@@ -120,9 +120,14 @@ function Game() {
 		boxElementsArray.map((box) => {
 			if (box.classList.contains("bg-teal-200")) {
 				box.classList.remove("bg-teal-200");
-				if (validStatus == 1) box.classList.add("bg-emerald-400");
-				else if (validStatus == 2) box.classList.add("bg-amber-200");
-				else box.classList.add("bg-red-400");
+				if (currentWord.length >= 3) {
+					if (validStatus == 1) box.classList.add("bg-emerald-400");
+					else if (validStatus == 2)
+						box.classList.add("bg-amber-200");
+					else box.classList.add("bg-red-400");
+				} else {
+					box.classList.add("bg-blue-400");
+				}
 
 				setTimeout(() => {
 					box.classList.remove("bg-emerald-400");
@@ -135,6 +140,15 @@ function Game() {
 				}, 400);
 			}
 		});
+
+		if (currentWord.length < 3) {
+			setTimeout(() => {
+				setCurrentWordScore(0);
+				setCurrentWord("");
+				setGameData(originalData);
+			}, 400);
+			return;
+		}
 
 		let specialComments: HTMLElement | null =
 			document.querySelector(".special-comments");
