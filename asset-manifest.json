@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/shabd-sharda/static/css/main.e9b7cd1a.css",
-    "main.js": "/shabd-sharda/static/js/main.5b62df76.js",
+    "main.js": "/shabd-sharda/static/js/main.a9c50837.js",
     "static/js/845.aa1021ec.chunk.js": "/shabd-sharda/static/js/845.aa1021ec.chunk.js",
     "static/js/787.912e1287.chunk.js": "/shabd-sharda/static/js/787.912e1287.chunk.js",
     "static/media/accepted_word.mp3": "/shabd-sharda/static/media/accepted_word.dbc276b6ed494d6f13d5.mp3",
@@ -11,12 +11,12 @@
     "static/media/letter_selector.mp3": "/shabd-sharda/static/media/letter_selector.077af477ba18dac0cde4.mp3",
     "index.html": "/shabd-sharda/index.html",
     "main.e9b7cd1a.css.map": "/shabd-sharda/static/css/main.e9b7cd1a.css.map",
-    "main.5b62df76.js.map": "/shabd-sharda/static/js/main.5b62df76.js.map",
+    "main.a9c50837.js.map": "/shabd-sharda/static/js/main.a9c50837.js.map",
     "845.aa1021ec.chunk.js.map": "/shabd-sharda/static/js/845.aa1021ec.chunk.js.map",
     "787.912e1287.chunk.js.map": "/shabd-sharda/static/js/787.912e1287.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e9b7cd1a.css",
-    "static/js/main.5b62df76.js"
+    "static/js/main.a9c50837.js"
   ]
 }
