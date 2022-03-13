@@ -12,6 +12,7 @@ import { WordsData, Data, Events } from "../assets/data/Interfaces";
 
 function Game() {
 	let validWordsList: Array<WordsData> = [];
+	let isMouseOut: boolean = false;
 
 	solutionData.map((solution) => {
 		if (solution.length > 2) {
@@ -113,7 +114,7 @@ function Game() {
 		let tempScore = gameScore;
 
 		let boxElements = document.querySelectorAll(".game-box");
-		console.log(currentWord);
+		// console.log(currentWord);
 
 		let boxElementsArray = Array.prototype.slice.call(boxElements);
 		boxElementsArray.map((box) => {
@@ -170,7 +171,24 @@ function Game() {
 		if (gameBox) {
 			let mouseX = event.touches[0].clientX - gameBox.offsetLeft,
 				mouseY = event.touches[0].clientY - gameBox.offsetTop;
+			// console.log(gameBox.offsetWidth);
 			// console.log(mouseX);
+
+			if (
+				mouseX < 0 ||
+				mouseX > gameBox.offsetWidth ||
+				mouseY < 0 ||
+				mouseY > gameBox.offsetHeight
+			) {
+				if (!isMouseOut) {
+					isMouseOut = true;
+					setTimeout(() => {
+						endWordAndReset(true);
+					}, 10);
+				}
+				return;
+			}
+
 			let indexX = getEventZone(mouseY);
 			let indexY = getEventZone(mouseX);
 			let boxId = getBoxIdByEventCoords(indexX, indexY);
@@ -208,6 +226,13 @@ function Game() {
 					handelTouchMove(e);
 				}}
 				onTouchEnd={() => {
+					if (!isMouseOut) {
+						setTimeout(() => {
+							endWordAndReset(true);
+						}, 10);
+					}
+				}}
+				onMouseLeave={(e) => {
 					setTimeout(() => {
 						endWordAndReset(true);
 					}, 10);
