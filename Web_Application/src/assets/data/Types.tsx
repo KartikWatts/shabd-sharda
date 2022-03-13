@@ -4,7 +4,9 @@ export type DataProps = {
 	value: number;
 	isIncluded: boolean;
 	isMouseDown: boolean;
+	selectedBoxId: number;
 	updateState: (id: number) => void;
+	updateSelctedBoxId: (id: number) => void;
 	endWord: () => void;
 };
 

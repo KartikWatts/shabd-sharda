@@ -37,6 +37,7 @@ function Game() {
 		useState<WordsData[]>(validWordsList);
 	const [currentWordScore, setCurrentWordScore] = useState<number>(0);
 	const [gameScore, setGameScore] = useState<number>(0);
+	const [selectedBoxId, setSelectedBoxId] = useState<number>(-1);
 
 	document.addEventListener("mousedown", () => {
 		setIsMouseDown(true);
@@ -50,6 +51,10 @@ function Game() {
 	document.addEventListener("touchend", () => {
 		setIsTouchActive(false);
 	});
+
+	const updateSelectedBoxId = (id: number) => {
+		setSelectedBoxId(id);
+	};
 
 	const updateState = (id: number, alarm: any) => {
 		let data = { ...gameData[id] };
@@ -146,6 +151,7 @@ function Game() {
 				setCurrentWordScore(0);
 				setCurrentWord("");
 				setGameData(originalData);
+				updateSelectedBoxId(-1);
 			}, 400);
 			return;
 		}
@@ -178,7 +184,22 @@ function Game() {
 			setCurrentWordScore(0);
 			setCurrentWord("");
 			setGameData(originalData);
+			updateSelectedBoxId(-1);
 		}, 400);
+	};
+
+	/**
+	 * Checks if current boxId is valid (It should be adjacent tile of previous boxId always)
+	 * TODO: At present, a tile on edge can select the edge at it's extreme end
+	 */
+	const isBoxIdValid = (id: number) => {
+		let defArray = [-1, 1, -3, -4, -5, 3, 4, 5];
+		if (selectedBoxId == -1) return true;
+		for (let index = 0; index < defArray.length; index++) {
+			let validId = selectedBoxId - defArray[index];
+			if (validId > 0 && id == validId) return true;
+		}
+		return false;
 	};
 
 	const handelTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
@@ -208,6 +229,9 @@ function Game() {
 			let boxId = getBoxIdByEventCoords(indexX, indexY);
 
 			if (boxId != null && !gameData[boxId].isIncluded) {
+				if (!isBoxIdValid(boxId)) return;
+				updateSelectedBoxId(boxId);
+
 				let currentBox: HTMLElement | null = document.getElementById(
 					`box-${boxId}`
 				);
@@ -261,6 +285,10 @@ function Game() {
 							}}
 							isMouseDown={isMouseDown}
 							updateState={() => updateState(data.id, true)}
+							selectedBoxId={selectedBoxId}
+							updateSelctedBoxId={() =>
+								updateSelectedBoxId(data.id)
+							}
 							{...data}
 						/>
 					);
