@@ -2,6 +2,21 @@ import React from "react";
 import { DataProps } from "../assets/data/Types";
 
 function GameBox(props: DataProps) {
+	/**
+	 * Checks if current boxId is valid (It should be adjacent tile of previous boxId always)
+	 */
+	const isBoxIdValid = (id: number) => {
+		let defArray = [-1, 1, -3, -4, -5, 3, 4, 5];
+		if (props.selectedBoxId == -1) return true;
+		for (let index = 0; index < defArray.length; index++) {
+			let validId = props.selectedBoxId - defArray[index];
+			if (props.selectedBoxId % 4 == 0 && id % 4 == 3) return false;
+			if (props.selectedBoxId % 4 == 3 && id % 4 == 0) return false;
+			if (validId >= 0 && id == validId) return true;
+		}
+		return false;
+	};
+
 	return (
 		<div
 			id={`box-${props.id.toString()}`}
@@ -25,6 +40,9 @@ function GameBox(props: DataProps) {
 							mouseY > boxY / 10 &&
 							mouseY < (8.5 * boxY) / 10
 						) {
+							if (!isBoxIdValid(props.id)) return;
+							props.updateSelctedBoxId(props.id);
+
 							currentBox.classList.remove("bg-blue-400");
 							currentBox.classList.remove("hover:bg-violet-400");
 							currentBox.classList.add("bg-teal-200");

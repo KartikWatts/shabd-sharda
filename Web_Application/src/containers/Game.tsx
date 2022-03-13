@@ -12,6 +12,7 @@ import { WordsData, Data, Events } from "../assets/data/Interfaces";
 
 function Game() {
 	let validWordsList: Array<WordsData> = [];
+	let isMouseOut: boolean = false;
 
 	solutionData.map((solution) => {
 		if (solution.length > 2) {
@@ -36,6 +37,7 @@ function Game() {
 		useState<WordsData[]>(validWordsList);
 	const [currentWordScore, setCurrentWordScore] = useState<number>(0);
 	const [gameScore, setGameScore] = useState<number>(0);
+	const [selectedBoxId, setSelectedBoxId] = useState<number>(-1);
 
 	document.addEventListener("mousedown", () => {
 		setIsMouseDown(true);
@@ -49,6 +51,10 @@ function Game() {
 	document.addEventListener("touchend", () => {
 		setIsTouchActive(false);
 	});
+
+	const updateSelectedBoxId = (id: number) => {
+		setSelectedBoxId(id);
+	};
 
 	const updateState = (id: number, alarm: any) => {
 		let data = { ...gameData[id] };
@@ -113,15 +119,20 @@ function Game() {
 		let tempScore = gameScore;
 
 		let boxElements = document.querySelectorAll(".game-box");
-		console.log(currentWord);
+		// console.log(currentWord);
 
 		let boxElementsArray = Array.prototype.slice.call(boxElements);
 		boxElementsArray.map((box) => {
 			if (box.classList.contains("bg-teal-200")) {
 				box.classList.remove("bg-teal-200");
-				if (validStatus == 1) box.classList.add("bg-emerald-400");
-				else if (validStatus == 2) box.classList.add("bg-amber-200");
-				else box.classList.add("bg-red-400");
+				if (currentWord.length >= 3) {
+					if (validStatus == 1) box.classList.add("bg-emerald-400");
+					else if (validStatus == 2)
+						box.classList.add("bg-amber-200");
+					else box.classList.add("bg-red-400");
+				} else {
+					box.classList.add("bg-blue-400");
+				}
 
 				setTimeout(() => {
 					box.classList.remove("bg-emerald-400");
@@ -134,6 +145,16 @@ function Game() {
 				}, 400);
 			}
 		});
+
+		if (currentWord.length < 3) {
+			setTimeout(() => {
+				setCurrentWordScore(0);
+				setCurrentWord("");
+				setGameData(originalData);
+				updateSelectedBoxId(-1);
+			}, 400);
+			return;
+		}
 
 		let specialComments: HTMLElement | null =
 			document.querySelector(".special-comments");
@@ -163,19 +184,55 @@ function Game() {
 			setCurrentWordScore(0);
 			setCurrentWord("");
 			setGameData(originalData);
+			updateSelectedBoxId(-1);
 		}, 400);
+	};
+
+	/**
+	 * Checks if current boxId is valid (It should be adjacent tile of previous boxId always)
+	 */
+	const isBoxIdValid = (id: number) => {
+		let defArray = [-1, 1, -3, -4, -5, 3, 4, 5];
+		if (selectedBoxId == -1) return true;
+		for (let index = 0; index < defArray.length; index++) {
+			let validId = selectedBoxId - defArray[index];
+			if (selectedBoxId % 4 == 0 && id % 4 == 3) return false;
+			if (selectedBoxId % 4 == 3 && id % 4 == 0) return false;
+			if (validId >= 0 && id == validId) return true;
+		}
+		return false;
 	};
 
 	const handelTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
 		if (gameBox) {
 			let mouseX = event.touches[0].clientX - gameBox.offsetLeft,
 				mouseY = event.touches[0].clientY - gameBox.offsetTop;
+			// console.log(gameBox.offsetWidth);
 			// console.log(mouseX);
+
+			if (
+				mouseX < 0 ||
+				mouseX > gameBox.offsetWidth ||
+				mouseY < 0 ||
+				mouseY > gameBox.offsetHeight
+			) {
+				if (!isMouseOut) {
+					isMouseOut = true;
+					setTimeout(() => {
+						endWordAndReset(true);
+					}, 10);
+				}
+				return;
+			}
+
 			let indexX = getEventZone(mouseY);
 			let indexY = getEventZone(mouseX);
 			let boxId = getBoxIdByEventCoords(indexX, indexY);
 
 			if (boxId != null && !gameData[boxId].isIncluded) {
+				if (!isBoxIdValid(boxId)) return;
+				updateSelectedBoxId(boxId);
+
 				let currentBox: HTMLElement | null = document.getElementById(
 					`box-${boxId}`
 				);
@@ -208,6 +265,13 @@ function Game() {
 					handelTouchMove(e);
 				}}
 				onTouchEnd={() => {
+					if (!isMouseOut) {
+						setTimeout(() => {
+							endWordAndReset(true);
+						}, 10);
+					}
+				}}
+				onMouseLeave={(e) => {
 					setTimeout(() => {
 						endWordAndReset(true);
 					}, 10);
@@ -222,6 +286,10 @@ function Game() {
 							}}
 							isMouseDown={isMouseDown}
 							updateState={() => updateState(data.id, true)}
+							selectedBoxId={selectedBoxId}
+							updateSelctedBoxId={() =>
+								updateSelectedBoxId(data.id)
+							}
 							{...data}
 						/>
 					);

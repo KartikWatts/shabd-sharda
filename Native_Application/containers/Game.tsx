@@ -10,6 +10,7 @@ import { Audio } from "expo-av";
 
 function Game() {
 	let validWordsList: Array<WordsData> = [];
+	let isMouseOut = false;
 
 	const [currentWord, setCurrentWord] = useState<string>("");
 	const [gameData, setGameData] = useState<Data[]>(originalData);
@@ -21,6 +22,7 @@ function Game() {
 		null
 	);
 	const [isItAwesome, setIsItAwesome] = useState<boolean>(false);
+	const [selectedBoxId, setSelectedBoxId] = useState<number>(-1);
 
 	solutionData.map((solution) => {
 		if (solution.length > 2) {
@@ -137,20 +139,64 @@ function Game() {
 		return 0;
 	};
 
+	/**
+	 * Checks if current boxId is valid (It should be adjacent tile of previous boxId always)
+	 */
+	const isBoxIdValid = (id: number) => {
+		let defArray = [-1, 1, -3, -4, -5, 3, 4, 5];
+		if (selectedBoxId == -1) return true;
+		for (let index = 0; index < defArray.length; index++) {
+			let validId = selectedBoxId - defArray[index];
+			if (selectedBoxId % 4 == 0 && id % 4 == 3) return false;
+			if (selectedBoxId % 4 == 3 && id % 4 == 0) return false;
+			if (validId >= 0 && id == validId) return true;
+		}
+		return false;
+	};
+
 	const handelTouchMove = (e: GestureResponderEvent) => {
 		if (deviceDimension) {
 			let boxX = Math.floor(e.nativeEvent.pageY - deviceDimension.y);
 			let boxY = Math.floor(e.nativeEvent.pageX - deviceDimension.x);
+			if (
+				boxX < 0 ||
+				boxX > deviceDimension.width ||
+				boxY < 0 ||
+				boxY > deviceDimension.height
+			) {
+				if (!isMouseOut && currentWord.length > 0) {
+					isMouseOut = true;
+					setTimeout(() => {
+						handleTouchEnd();
+					}, 10);
+				}
+				return;
+			}
 			let indexX = getEventZone(boxX);
 			let indexY = getEventZone(boxY);
 			let boxId = getBoxIdByEventCoords(indexX, indexY);
-			if (boxId != null) updateState(boxId);
+			if (boxId != null) {
+				if (!isBoxIdValid(boxId)) return;
+				setSelectedBoxId(boxId);
+				updateState(boxId);
+			}
 		}
 	};
 
 	useEffect(() => {}, [gameData]);
 
 	const handleTouchEnd = () => {
+		if (currentWord.length < 3) {
+			setTimeout(() => {
+				setCurrentWordScore(0);
+				setCurrentWord("");
+				setSelectedBoxId(-1);
+			}, 5);
+			setTimeout(() => {
+				setGameData(originalData);
+			}, 400);
+			return;
+		}
 		let validStatus = checkWordValidity(currentWord);
 		let tempScore = gameScore;
 		let tempData = gameData;
@@ -182,6 +228,7 @@ function Game() {
 			setGameScore(tempScore);
 			setCurrentWordScore(0);
 			setCurrentWord("");
+			setSelectedBoxId(-1);
 		}, 5);
 
 		setTimeout(() => {
@@ -226,9 +273,11 @@ function Game() {
 					handelTouchMove(e);
 				}}
 				onTouchEnd={() => {
-					setTimeout(() => {
-						handleTouchEnd();
-					}, 10);
+					if (!isMouseOut) {
+						setTimeout(() => {
+							handleTouchEnd();
+						}, 10);
+					}
 				}}
 				style={tw`flex flex-row justify-center items-center w-full flex-wrap`}
 			>
