@@ -10,7 +10,9 @@ function GameBox(props: DataProps) {
 		if (props.selectedBoxId == -1) return true;
 		for (let index = 0; index < defArray.length; index++) {
 			let validId = props.selectedBoxId - defArray[index];
-			if (validId > 0 && id == validId) return true;
+			if (props.selectedBoxId % 4 == 0 && id % 4 == 3) return false;
+			if (props.selectedBoxId % 4 == 3 && id % 4 == 0) return false;
+			if (validId >= 0 && id == validId) return true;
 		}
 		return false;
 	};

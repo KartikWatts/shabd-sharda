@@ -190,14 +190,15 @@ function Game() {
 
 	/**
 	 * Checks if current boxId is valid (It should be adjacent tile of previous boxId always)
-	 * TODO: At present, a tile on edge can select the edge at it's extreme end
 	 */
 	const isBoxIdValid = (id: number) => {
 		let defArray = [-1, 1, -3, -4, -5, 3, 4, 5];
 		if (selectedBoxId == -1) return true;
 		for (let index = 0; index < defArray.length; index++) {
 			let validId = selectedBoxId - defArray[index];
-			if (validId > 0 && id == validId) return true;
+			if (selectedBoxId % 4 == 0 && id % 4 == 3) return false;
+			if (selectedBoxId % 4 == 3 && id % 4 == 0) return false;
+			if (validId >= 0 && id == validId) return true;
 		}
 		return false;
 	};
