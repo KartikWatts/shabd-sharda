@@ -1,11 +1,18 @@
 import React from "react";
 import { WordProps } from "../assets/data/Types";
+import CountDown from "./CountDown";
 
 function WordDisplay(props: WordProps) {
 	return (
 		<div className="h-2 w-full mb-4 flex items-center">
-			<div className="w-1/4 text-slate-300 text-lg">
-				Score: <span className="text-xl text-white">{props.score}</span>
+			<div className="w-1/2 p-4  flex flex-col">
+				<CountDown />
+				<div className="text-slate-300 text-lg flex content-center">
+					Score:{" "}
+					<span className="text-2xl text-white pl-1">
+						{props.score}
+					</span>
+				</div>
 			</div>
 			{props.word != "" && (
 				<div className="bg-white px-2">
