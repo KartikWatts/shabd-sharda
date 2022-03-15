@@ -70,8 +70,6 @@ function Game() {
 				newData,
 				...gameData.slice(data.id + 1),
 			]);
-			// TODO:: FIX FOR SOUNDS
-			// console.log("playing sound");
 
 			if (alarm) playLetterSelectorSound();
 
@@ -272,9 +270,11 @@ function Game() {
 					}
 				}}
 				onMouseLeave={(e) => {
-					setTimeout(() => {
-						endWordAndReset(true);
-					}, 10);
+					if (isMouseDown) {
+						setTimeout(() => {
+							endWordAndReset(true);
+						}, 10);
+					}
 				}}
 			>
 				{gameData.map((data) => {

@@ -1,14 +1,24 @@
 import React, { useEffect, useState } from "react";
-import countdown_timer from "../assets/sounds/countdown_time.mp3";
-import useSound from "use-sound";
+import { Audio } from "expo-av";
+import tw from "twrnc";
+import { Text, View } from "react-native";
 
 function CountDown() {
 	const [countDown, setCountDown] = useState("120");
 	const [countDownTime, setCountDownTime] = useState(0);
 	const [isFinalSeconds, setIsFinalSeconds] = useState(false);
 
-	const [playCountDownTimer, { stop: stopCountDownTimer }] =
-		useSound(countdown_timer);
+	const [countDownTimerSound, setCountDownTimerSound] =
+		useState<Audio.Sound>();
+
+	useEffect(() => {
+		(async () => {
+			const { sound } = await Audio.Sound.createAsync(
+				require("../assets/sounds/countdown_time.mp3")
+			);
+			setCountDownTimerSound(sound);
+		})();
+	}, []);
 
 	useEffect(() => {
 		// TODO:: TO BE REPLACED BY TIME OF THE GAME ON THE SERVER IF EXISTS
@@ -40,23 +50,27 @@ function CountDown() {
 	}, [countDownTime]);
 
 	useEffect(() => {
-		if (countDown == "10") {
-			playCountDownTimer();
-		}
-		if (countDown == "0") {
-			stopCountDownTimer();
+		if (countDownTimerSound) {
+			if (countDown == "10") {
+				countDownTimerSound.playAsync();
+			}
+			if (countDown == "0") {
+				countDownTimerSound.stopAsync();
+			}
 		}
 	}, [countDown]);
 
 	return (
-		<div
-			id="countdown_timer"
-			className={`${
-				isFinalSeconds ? "text-red-400" : "text-slate-300"
-			}   text-2xl`}
-		>
-			{countDown}
-		</div>
+		<View style={tw`w-30 px-2`}>
+			<Text
+				style={[
+					isFinalSeconds ? tw`text-red-400` : tw`text-slate-300`,
+					tw`text-2xl`,
+				]}
+			>
+				{countDown}
+			</Text>
+		</View>
 	);
 }
 
