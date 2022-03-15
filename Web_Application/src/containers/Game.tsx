@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import GameBox from "../components/GameBox";
 import WordDisplay from "../components/WordDisplay";
 import letter_selector_sound from "../assets/sounds/letter_selector.mp3";
@@ -8,7 +8,7 @@ import invalid_word_sound from "../assets/sounds/invalid_word.mp3";
 import bonus1_sound from "../assets/sounds/bonus1.mp3";
 import useSound from "use-sound";
 import { originalData, solutionData } from "../assets/data/GameDataSource";
-import { WordsData, Data, Events } from "../assets/data/Interfaces";
+import { WordsData, Data } from "../assets/data/Interfaces";
 
 function Game() {
 	let validWordsList: Array<WordsData> = [];

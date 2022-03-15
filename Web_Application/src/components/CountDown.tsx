@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import countdown_timer from "../assets/sounds/countdown_time.mp3";
 import useSound from "use-sound";
+import { GameContext } from "../contexts/GameContext";
 
 function CountDown() {
 	const [countDown, setCountDown] = useState("120");
 	const [countDownTime, setCountDownTime] = useState(0);
 	const [isFinalSeconds, setIsFinalSeconds] = useState(false);
+
+	const gameContext = useContext(GameContext);
 
 	const [playCountDownTimer, { stop: stopCountDownTimer }] =
 		useSound(countdown_timer);
@@ -35,6 +38,10 @@ function CountDown() {
 			}
 			if (seconds == 0) {
 				clearInterval(countDownInterval);
+				stopCountDownTimer();
+				setTimeout(() => {
+					if (gameContext) gameContext.toggleGameState();
+				}, 10);
 			}
 		}, 1000);
 	}, [countDownTime]);
