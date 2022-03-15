@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import GameBox from "../components/GameBox";
 import WordDisplay from "../components/WordDisplay";
 import letter_selector_sound from "../assets/sounds/letter_selector.mp3";
@@ -8,7 +8,7 @@ import invalid_word_sound from "../assets/sounds/invalid_word.mp3";
 import bonus1_sound from "../assets/sounds/bonus1.mp3";
 import useSound from "use-sound";
 import { originalData, solutionData } from "../assets/data/GameDataSource";
-import { WordsData, Data, Events } from "../assets/data/Interfaces";
+import { WordsData, Data } from "../assets/data/Interfaces";
 
 function Game() {
 	let validWordsList: Array<WordsData> = [];
@@ -70,8 +70,6 @@ function Game() {
 				newData,
 				...gameData.slice(data.id + 1),
 			]);
-			// TODO:: FIX FOR SOUNDS
-			// console.log("playing sound");
 
 			if (alarm) playLetterSelectorSound();
 
@@ -247,7 +245,7 @@ function Game() {
 	};
 
 	return (
-		<div className="flex justify-center items-center flex-col gap-5">
+		<div className="flex justify-center items-center flex-col gap-5 select-none">
 			<div
 				className={`special-comments absolute w-full h-full z-10 flex justify-center items-center bg-slate-600/[0.5] rounded-lg	scale-0`}
 			>
@@ -272,9 +270,11 @@ function Game() {
 					}
 				}}
 				onMouseLeave={(e) => {
-					setTimeout(() => {
-						endWordAndReset(true);
-					}, 10);
+					if (isMouseDown) {
+						setTimeout(() => {
+							endWordAndReset(true);
+						}, 10);
+					}
 				}}
 			>
 				{gameData.map((data) => {

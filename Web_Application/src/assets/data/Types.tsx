@@ -14,3 +14,8 @@ export type WordProps = {
 	word: string;
 	score: number;
 };
+
+export type GameContextType = {
+	isGameOn: boolean;
+	toggleGameState: () => void;
+};

@@ -17,4 +17,9 @@ let DEFAULT = 1,
 	ALREADY = 4,
 	WRONG = 5;
 
+export type GameContextType = {
+	isGameOn: boolean;
+	toggleGameState: () => void;
+};
+
 export { DEFAULT, SELECTED, CORRECT, ALREADY, WRONG };

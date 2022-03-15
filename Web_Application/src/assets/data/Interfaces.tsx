@@ -14,3 +14,14 @@ export interface Events {
 	id: number;
 	order: number;
 }
+
+export interface GameState {
+	isGameOn: boolean;
+}
+
+export enum GameActionType {
+	TOGGLE = "toggle",
+}
+export interface GameAction {
+	type: GameActionType;
+}
