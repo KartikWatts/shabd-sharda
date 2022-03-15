@@ -245,7 +245,7 @@ function Game() {
 	};
 
 	return (
-		<div className="flex justify-center items-center flex-col gap-5">
+		<div className="flex justify-center items-center flex-col gap-5 select-none">
 			<div
 				className={`special-comments absolute w-full h-full z-10 flex justify-center items-center bg-slate-600/[0.5] rounded-lg	scale-0`}
 			>

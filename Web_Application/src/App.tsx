@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { GameActionType } from "./assets/data/Interfaces";
 import Game from "./containers/Game";
 import { GameContext } from "./contexts/GameContext";
 
@@ -13,13 +12,14 @@ function App() {
 			) : (
 				<div>
 					<button
+						className="bg-yellow-300 p-8 border-4 hover:bg-amber-300 border-blue-400 rounded-lg text-blue-600 transition-all text-2xl drop-shadow-xl hover:drop-shadow-2xl font-bold hover:scale-105"
 						onClick={() => {
 							if (gameContext) {
 								gameContext.toggleGameState();
 							}
 						}}
 					>
-						start game
+						Start Game
 					</button>
 				</div>
 			)}

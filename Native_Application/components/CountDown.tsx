@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Audio } from "expo-av";
 import tw from "twrnc";
 import { Text, View } from "react-native";
+import { GameContext } from "../contexts/GameContext";
 
 function CountDown() {
 	const [countDown, setCountDown] = useState("120");
 	const [countDownTime, setCountDownTime] = useState(0);
 	const [isFinalSeconds, setIsFinalSeconds] = useState(false);
+
+	const gameContext = useContext(GameContext);
 
 	const [countDownTimerSound, setCountDownTimerSound] =
 		useState<Audio.Sound>();
@@ -44,7 +47,11 @@ function CountDown() {
 				setIsFinalSeconds(true);
 			}
 			if (seconds == 0) {
+				if (countDownTimerSound) countDownTimerSound.stopAsync();
 				clearInterval(countDownInterval);
+				setTimeout(() => {
+					if (gameContext) gameContext.toggleGameState();
+				}, 10);
 			}
 		}, 1000);
 	}, [countDownTime]);
