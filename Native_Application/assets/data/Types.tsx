@@ -1,3 +1,5 @@
+import { FoundWords } from "./Interfaces";
+
 export type DataProps = {
 	id: number;
 	letter: string;
@@ -6,7 +8,7 @@ export type DataProps = {
 	tileState: number;
 };
 
-export type WordProps = {
+export type ScoreProps = {
 	word: string;
 	score: number;
 	totalWords: number;
@@ -22,6 +24,10 @@ let DEFAULT = 1,
 export type GameContextType = {
 	isGameOn: boolean;
 	toggleGameState: () => void;
+};
+
+export type WordProps = {
+	foundWords: FoundWords[];
 };
 
 export { DEFAULT, SELECTED, CORRECT, ALREADY, WRONG };

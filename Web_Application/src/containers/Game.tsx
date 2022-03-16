@@ -7,8 +7,9 @@ import invalid_word_sound from "../assets/sounds/invalid_word.mp3";
 import bonus1_sound from "../assets/sounds/bonus1.mp3";
 import useSound from "use-sound";
 import { originalData, solutionData } from "../assets/data/GameDataSource";
-import { WordsData, Data } from "../assets/data/Interfaces";
+import { WordsData, Data, FoundWords } from "../assets/data/Interfaces";
 import ScoreDisplay from "../components/ScoreDisplay";
+import WordDisplay from "../components/WordDisplay";
 
 function Game() {
 	let validWordsList: Array<WordsData> = [];
@@ -38,7 +39,7 @@ function Game() {
 	const [currentWordScore, setCurrentWordScore] = useState<number>(0);
 	const [gameScore, setGameScore] = useState<number>(0);
 	const [selectedBoxId, setSelectedBoxId] = useState<number>(-1);
-	const [foundWords, setFoundWords] = useState<string[]>([]);
+	const [foundWords, setFoundWords] = useState<FoundWords[]>([]);
 
 	document.addEventListener("mousedown", () => {
 		setIsMouseDown(true);
@@ -181,8 +182,14 @@ function Game() {
 				tempScore += currentWordScore;
 
 				let tempFoundWords = foundWords;
-				tempFoundWords.push(currentWord);
+				tempFoundWords.push({
+					score: currentWordScore,
+					value: currentWord,
+				});
 				setFoundWords(tempFoundWords);
+				let foundWordsDiv = document.getElementById("found-words-list");
+				if (foundWordsDiv)
+					foundWordsDiv.scrollTop = foundWordsDiv.scrollHeight;
 			}
 
 			setGameScore(tempScore);
@@ -307,6 +314,7 @@ function Game() {
 					);
 				})}
 			</div>
+			<WordDisplay foundWords={foundWords} />
 		</div>
 	);
 }

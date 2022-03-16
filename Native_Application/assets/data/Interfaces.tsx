@@ -33,3 +33,8 @@ export enum GameActionType {
 export interface GameAction {
 	type: GameActionType;
 }
+
+export interface FoundWords {
+	score: number;
+	value: string;
+}

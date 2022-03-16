@@ -1,3 +1,5 @@
+import { FoundWords } from "./Interfaces";
+
 export type DataProps = {
 	id: number;
 	letter: string;
@@ -10,7 +12,7 @@ export type DataProps = {
 	endWord: () => void;
 };
 
-export type WordProps = {
+export type ScoreProps = {
 	word: string;
 	score: number;
 	totalWords: number;
@@ -20,4 +22,8 @@ export type WordProps = {
 export type GameContextType = {
 	isGameOn: boolean;
 	toggleGameState: () => void;
+};
+
+export type WordProps = {
+	foundWords: FoundWords[];
 };

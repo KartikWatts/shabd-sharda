@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import tw from "twrnc";
 import { View, Text, GestureResponderEvent, StyleSheet } from "react-native";
-import { WordsData, Data, LayoutData } from "../assets/data/Interfaces";
+import {
+	WordsData,
+	Data,
+	LayoutData,
+	FoundWords,
+} from "../assets/data/Interfaces";
 import { originalData, solutionData } from "../assets/data/GameDataSource";
 import GameBox from "../components/GameBox";
 import { ALREADY, CORRECT, SELECTED, WRONG } from "../assets/data/Types";
 import { Audio } from "expo-av";
 import ScoreDisplay from "../components/ScoreDisplay";
+import WordDisplay from "../components/WordDisplay";
 
 function Game() {
 	let validWordsList: Array<WordsData> = [];
@@ -23,7 +29,7 @@ function Game() {
 	);
 	const [isItAwesome, setIsItAwesome] = useState<boolean>(false);
 	const [selectedBoxId, setSelectedBoxId] = useState<number>(-1);
-	const [foundWords, setFoundWords] = useState<string[]>([]);
+	const [foundWords, setFoundWords] = useState<FoundWords[]>([]);
 
 	solutionData.map((solution) => {
 		if (solution.length > 2) {
@@ -226,7 +232,10 @@ function Game() {
 				tempScore += currentWordScore;
 
 				let tempFoundWords = foundWords;
-				tempFoundWords.push(currentWord);
+				tempFoundWords.unshift({
+					score: currentWordScore,
+					value: currentWord,
+				});
 				setFoundWords(tempFoundWords);
 			}
 			console.log(currentWord);
@@ -297,6 +306,7 @@ function Game() {
 					return <GameBox key={data.id} {...data} />;
 				})}
 			</View>
+			<WordDisplay foundWords={foundWords} />
 		</View>
 	);
 }

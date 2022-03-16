@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { View, Text } from "react-native";
 import tw from "twrnc";
 
-import { WordProps } from "../assets/data/Types";
+import { ScoreProps } from "../assets/data/Types";
 import CountDown from "./CountDown";
 
-function ScoreDisplay(props: WordProps) {
+function ScoreDisplay(props: ScoreProps) {
 	return (
-		<View style={tw`h-8 w-full mb-6 flex flex-row items-center px-4`}>
+		<View style={tw`h-20 w-full mt-4 mb-4 flex flex-row items-center px-4`}>
 			<View>
 				<CountDown />
 				<View style={tw`w-30 px-2`}>
@@ -20,7 +20,7 @@ function ScoreDisplay(props: WordProps) {
 				</View>
 			</View>
 			<View style={tw`w-1/2 flex flex-col`}>
-				<View style={tw`flex flex-row items-center mb-1`}>
+				<View style={tw`flex flex-row items-center mb-2`}>
 					<Text style={tw`text-slate-300 text-lg`}> Found: </Text>
 					<Text style={tw`text-xl text-white px-1`}>
 						{props.foundWords}

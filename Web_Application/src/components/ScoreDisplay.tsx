@@ -1,10 +1,10 @@
 import React from "react";
-import { WordProps } from "../assets/data/Types";
+import { ScoreProps } from "../assets/data/Types";
 import CountDown from "./CountDown";
 
-function ScoreDisplay(props: WordProps) {
+function ScoreDisplay(props: ScoreProps) {
 	return (
-		<div className="h-2 w-full mb-5 flex items-center">
+		<div className="h-8 mt-8 w-full mb-5 flex items-center">
 			<div className="w-1/2 p-4  flex flex-col">
 				<CountDown />
 				<div className="text-slate-300 text-lg flex items-center">
