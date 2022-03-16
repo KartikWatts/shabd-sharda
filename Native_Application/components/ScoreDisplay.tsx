@@ -5,7 +5,7 @@ import tw from "twrnc";
 import { WordProps } from "../assets/data/Types";
 import CountDown from "./CountDown";
 
-function WordDisplay(props: WordProps) {
+function ScoreDisplay(props: WordProps) {
 	return (
 		<View style={tw`h-8 w-full mb-6 flex flex-row items-center px-4`}>
 			<View>
@@ -39,4 +39,4 @@ function WordDisplay(props: WordProps) {
 	);
 }
 
-export default WordDisplay;
+export default ScoreDisplay;

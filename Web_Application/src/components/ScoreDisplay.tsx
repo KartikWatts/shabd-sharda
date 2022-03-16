@@ -2,7 +2,7 @@ import React from "react";
 import { WordProps } from "../assets/data/Types";
 import CountDown from "./CountDown";
 
-function WordDisplay(props: WordProps) {
+function ScoreDisplay(props: WordProps) {
 	return (
 		<div className="h-2 w-full mb-5 flex items-center">
 			<div className="w-1/2 p-4  flex flex-col">
@@ -15,7 +15,7 @@ function WordDisplay(props: WordProps) {
 				</div>
 			</div>
 			<div className="w-1/2 p-4  flex flex-col">
-				<div className="flex items-center">
+				<div className="flex items-center mb-1">
 					<span className="text-slate-300 text-lg"> Found: </span>
 					<span className="text-xl text-white px-1">
 						{props.foundWords}
@@ -38,4 +38,4 @@ function WordDisplay(props: WordProps) {
 	);
 }
 
-export default WordDisplay;
+export default ScoreDisplay;

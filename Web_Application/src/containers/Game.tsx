@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import GameBox from "../components/GameBox";
-import WordDisplay from "../components/WordDisplay";
 import letter_selector_sound from "../assets/sounds/letter_selector.mp3";
 import already_present_sound from "../assets/sounds/already_present.mp3";
 import accepted_word_sound from "../assets/sounds/accepted_word.mp3";
@@ -9,6 +8,7 @@ import bonus1_sound from "../assets/sounds/bonus1.mp3";
 import useSound from "use-sound";
 import { originalData, solutionData } from "../assets/data/GameDataSource";
 import { WordsData, Data } from "../assets/data/Interfaces";
+import ScoreDisplay from "../components/ScoreDisplay";
 
 function Game() {
 	let validWordsList: Array<WordsData> = [];
@@ -263,7 +263,7 @@ function Game() {
 					Awesome!
 				</div>
 			</div>
-			<WordDisplay
+			<ScoreDisplay
 				word={currentWord}
 				score={gameScore}
 				totalWords={solutionData.length || 0}

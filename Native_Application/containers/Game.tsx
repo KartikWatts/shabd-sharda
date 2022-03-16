@@ -4,9 +4,9 @@ import { View, Text, GestureResponderEvent, StyleSheet } from "react-native";
 import { WordsData, Data, LayoutData } from "../assets/data/Interfaces";
 import { originalData, solutionData } from "../assets/data/GameDataSource";
 import GameBox from "../components/GameBox";
-import WordDisplay from "../components/WordDisplay";
 import { ALREADY, CORRECT, SELECTED, WRONG } from "../assets/data/Types";
 import { Audio } from "expo-av";
+import ScoreDisplay from "../components/ScoreDisplay";
 
 function Game() {
 	let validWordsList: Array<WordsData> = [];
@@ -270,7 +270,7 @@ function Game() {
 				</Text>
 			</View>
 
-			<WordDisplay
+			<ScoreDisplay
 				word={currentWord}
 				score={gameScore}
 				totalWords={solutionData.length || 0}
