@@ -72,7 +72,7 @@ function CountDown() {
 			<Text
 				style={[
 					isFinalSeconds ? tw`text-red-400` : tw`text-slate-300`,
-					tw`text-2xl`,
+					tw`text-3xl`,
 				]}
 			>
 				{countDown}

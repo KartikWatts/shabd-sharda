@@ -9,6 +9,8 @@ export type DataProps = {
 export type WordProps = {
 	word: string;
 	score: number;
+	totalWords: number;
+	foundWords: number;
 };
 
 let DEFAULT = 1,

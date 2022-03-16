@@ -7,7 +7,7 @@ import CountDown from "./CountDown";
 
 function WordDisplay(props: WordProps) {
 	return (
-		<View style={tw`h-8 w-full mb-8 flex flex-row items-center px-4`}>
+		<View style={tw`h-8 w-full mb-6 flex flex-row items-center px-4`}>
 			<View>
 				<CountDown />
 				<View style={tw`w-30 px-2`}>
@@ -19,9 +19,20 @@ function WordDisplay(props: WordProps) {
 					</Text>
 				</View>
 			</View>
-			<View>
-				{props.word != "" && (
+			<View style={tw`w-1/2 flex flex-col`}>
+				<View style={tw`flex flex-row items-center mb-1`}>
+					<Text style={tw`text-slate-300 text-lg`}> Found: </Text>
+					<Text style={tw`text-xl text-white px-1`}>
+						{props.foundWords}
+					</Text>
+					<Text style={tw`text-slate-200 text-lg`}>
+						/{props.totalWords}
+					</Text>
+				</View>
+				{props.word != "" ? (
 					<Text style={tw`text-lg bg-white px-2`}>{props.word}</Text>
+				) : (
+					<View style={tw`h-7`}></View>
 				)}
 			</View>
 		</View>

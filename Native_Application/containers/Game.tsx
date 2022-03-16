@@ -23,6 +23,7 @@ function Game() {
 	);
 	const [isItAwesome, setIsItAwesome] = useState<boolean>(false);
 	const [selectedBoxId, setSelectedBoxId] = useState<number>(-1);
+	const [foundWords, setFoundWords] = useState<string[]>([]);
 
 	solutionData.map((solution) => {
 		if (solution.length > 2) {
@@ -221,7 +222,13 @@ function Game() {
 		if (validStatus == 2) playAlreadyPresentSound();
 
 		setTimeout(() => {
-			if (validStatus == 1) tempScore += currentWordScore;
+			if (validStatus == 1) {
+				tempScore += currentWordScore;
+
+				let tempFoundWords = foundWords;
+				tempFoundWords.push(currentWord);
+				setFoundWords(tempFoundWords);
+			}
 			console.log(currentWord);
 			console.log("Score: ", currentWordScore);
 
@@ -263,7 +270,12 @@ function Game() {
 				</Text>
 			</View>
 
-			<WordDisplay word={currentWord} score={gameScore} />
+			<WordDisplay
+				word={currentWord}
+				score={gameScore}
+				totalWords={solutionData.length || 0}
+				foundWords={foundWords.length}
+			/>
 
 			<View
 				onLayout={({ nativeEvent }) => {

@@ -60,7 +60,7 @@ function CountDown() {
 			id="countdown_timer"
 			className={`${
 				isFinalSeconds ? "text-red-400" : "text-slate-300"
-			}   text-2xl`}
+			}   text-3xl`}
 		>
 			{countDown}
 		</div>

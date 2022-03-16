@@ -38,6 +38,7 @@ function Game() {
 	const [currentWordScore, setCurrentWordScore] = useState<number>(0);
 	const [gameScore, setGameScore] = useState<number>(0);
 	const [selectedBoxId, setSelectedBoxId] = useState<number>(-1);
+	const [foundWords, setFoundWords] = useState<string[]>([]);
 
 	document.addEventListener("mousedown", () => {
 		setIsMouseDown(true);
@@ -176,7 +177,13 @@ function Game() {
 				specialComments.classList.remove("scale-1");
 				specialComments.classList.add("scale-0");
 			}
-			if (validStatus == 1) tempScore += currentWordScore;
+			if (validStatus == 1) {
+				tempScore += currentWordScore;
+
+				let tempFoundWords = foundWords;
+				tempFoundWords.push(currentWord);
+				setFoundWords(tempFoundWords);
+			}
 
 			setGameScore(tempScore);
 			setCurrentWordScore(0);
@@ -256,7 +263,12 @@ function Game() {
 					Awesome!
 				</div>
 			</div>
-			<WordDisplay word={currentWord} score={gameScore} />
+			<WordDisplay
+				word={currentWord}
+				score={gameScore}
+				totalWords={solutionData.length || 0}
+				foundWords={foundWords.length}
+			/>
 			<div
 				className="game-box grid grid-cols-4 gap-1.5"
 				onTouchMove={(e) => {
