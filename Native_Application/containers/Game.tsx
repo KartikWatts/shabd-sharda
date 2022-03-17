@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import tw from "twrnc";
 import { View, Text, GestureResponderEvent, StyleSheet } from "react-native";
 import {
@@ -13,6 +13,7 @@ import { ALREADY, CORRECT, SELECTED, WRONG } from "../assets/data/Types";
 import { Audio } from "expo-av";
 import ScoreDisplay from "../components/ScoreDisplay";
 import WordDisplay from "../components/WordDisplay";
+import { GameContext } from "../contexts/GameContext";
 
 function Game() {
 	let validWordsList: Array<WordsData> = [];
@@ -30,6 +31,7 @@ function Game() {
 	const [isItAwesome, setIsItAwesome] = useState<boolean>(false);
 	const [selectedBoxId, setSelectedBoxId] = useState<number>(-1);
 	const [foundWords, setFoundWords] = useState<FoundWords[]>([]);
+	const gameContext = useContext(GameContext);
 
 	solutionData.map((solution) => {
 		if (solution.length > 2) {
@@ -39,6 +41,10 @@ function Game() {
 			});
 		}
 	});
+
+	useEffect(() => {
+		if (gameContext) gameContext.updateGameArray(gameData);
+	}, []);
 
 	const [sound, setSound] = useState<Audio.Sound>();
 
@@ -140,6 +146,7 @@ function Game() {
 			if (!tempWordsList[foundIndex].isIncluded) {
 				tempWordsList[foundIndex].isIncluded = true;
 				setValidWordsData(tempWordsList);
+				if (gameContext) gameContext.updateWordsList(tempWordsList);
 				return 1;
 			} else return 2;
 		}
@@ -242,6 +249,7 @@ function Game() {
 			console.log("Score: ", currentWordScore);
 
 			setGameScore(tempScore);
+			if (gameContext) gameContext.updateScore(tempScore);
 			setCurrentWordScore(0);
 			setCurrentWord("");
 			setSelectedBoxId(-1);

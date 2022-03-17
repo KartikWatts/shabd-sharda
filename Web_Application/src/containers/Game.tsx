@@ -45,7 +45,7 @@ function Game() {
 
 	useEffect(() => {
 		if (gameContext) gameContext.updateGameArray(gameData);
-	}, [gameContext]);
+	}, []);
 
 	document.addEventListener("mousedown", () => {
 		setIsMouseDown(true);

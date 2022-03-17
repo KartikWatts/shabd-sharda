@@ -3,6 +3,7 @@ import tw from "twrnc";
 import { Text, TouchableOpacity, View } from "react-native";
 import Game from "../containers/Game";
 import { GameContext } from "../contexts/GameContext";
+import ResultDisplay from "../containers/ResultDisplay";
 
 export default function GameWrapper() {
 	const gameContext = useContext(GameContext);
@@ -13,6 +14,12 @@ export default function GameWrapper() {
 		>
 			{gameContext && gameContext.isGameOn ? (
 				<Game />
+			) : gameContext && gameContext.wordsList.length > 0 ? (
+				<ResultDisplay
+					gameArray={gameContext.gameArray}
+					wordsList={gameContext.wordsList}
+					score={gameContext.score}
+				/>
 			) : (
 				<View>
 					<TouchableOpacity
