@@ -22,15 +22,18 @@ export type ScoreProps = {
 export type ResultProps = {
 	gameArray: Data[];
 	wordsList: WordsData[];
+	score: number;
 };
 
 export type GameContextType = {
 	isGameOn: boolean;
 	gameArray: Data[];
 	wordsList: WordsData[];
+	score: number;
 	toggleGameState: () => void;
 	updateWordsList: (wordsList: WordsData[]) => void;
 	updateGameArray: (gameArray: Data[]) => void;
+	updateScore: (score: number) => void;
 };
 
 export type WordProps = {

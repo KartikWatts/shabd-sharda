@@ -11,13 +11,8 @@ import { GameContextType } from "../assets/data/Types";
 const defaultState = {
 	isGameOn: false,
 	gameArray: [],
-	wordsList: [
-		{ value: "RAM", isIncluded: true },
-		{ value: "SHYAM", isIncluded: true },
-		{ value: "SHIVA", isIncluded: true },
-		{ value: "HANUMAN", isIncluded: false },
-		{ value: "SURYA", isIncluded: false },
-	],
+	wordsList: [],
+	score: 0,
 };
 
 const GameContext = createContext<GameContextType | null>(null);
@@ -34,8 +29,11 @@ const gameReducer = (state: GameState, action: GameAction) => {
 		case GameActionType.UPDATE_GAME_ARRAY: {
 			return { ...state, gameArray: payload };
 		}
+		case GameActionType.UPDATE_SCORE: {
+			return { ...state, score: payload };
+		}
 		default: {
-			throw new Error(`Unhandled action type: ${action.type}`);
+			throw new Error(`Unhandled action type: ${type}`);
 		}
 	}
 };
@@ -57,13 +55,21 @@ const GameProvider: React.FC = (props) => {
 			payload: gameArray,
 		});
 	};
+	const updateScore = (score: number) => {
+		dispatch({
+			type: GameActionType.UPDATE_SCORE,
+			payload: score,
+		});
+	};
 	const value = {
 		isGameOn: state.isGameOn,
 		gameArray: state.gameArray,
 		wordsList: state.wordsList,
+		score: state.score,
 		toggleGameState,
 		updateWordsList,
 		updateGameArray,
+		updateScore,
 	};
 
 	return (

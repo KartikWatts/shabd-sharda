@@ -14,6 +14,7 @@ function App() {
 				<ResultDisplay
 					gameArray={gameContext.gameArray}
 					wordsList={gameContext.wordsList}
+					score={gameContext.score}
 				/>
 			) : (
 				<div>

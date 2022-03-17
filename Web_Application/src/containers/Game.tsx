@@ -200,6 +200,7 @@ function Game() {
 			}
 
 			setGameScore(tempScore);
+			if (gameContext) gameContext.updateScore(tempScore);
 			setCurrentWordScore(0);
 			setCurrentWord("");
 			setGameData(originalData);
