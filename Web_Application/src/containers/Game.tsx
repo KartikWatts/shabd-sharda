@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import GameBox from "../components/GameBox";
 import letter_selector_sound from "../assets/sounds/letter_selector.mp3";
 import already_present_sound from "../assets/sounds/already_present.mp3";
@@ -10,6 +10,7 @@ import { originalData, solutionData } from "../assets/data/GameDataSource";
 import { WordsData, Data, FoundWords } from "../assets/data/Interfaces";
 import ScoreDisplay from "../components/ScoreDisplay";
 import WordDisplay from "../components/WordDisplay";
+import { GameContext } from "../contexts/GameContext";
 
 function Game() {
 	let validWordsList: Array<WordsData> = [];
@@ -40,6 +41,11 @@ function Game() {
 	const [gameScore, setGameScore] = useState<number>(0);
 	const [selectedBoxId, setSelectedBoxId] = useState<number>(-1);
 	const [foundWords, setFoundWords] = useState<FoundWords[]>([]);
+	const gameContext = useContext(GameContext);
+
+	useEffect(() => {
+		if (gameContext) gameContext.updateGameArray(gameData);
+	}, [gameContext]);
 
 	document.addEventListener("mousedown", () => {
 		setIsMouseDown(true);
@@ -108,6 +114,7 @@ function Game() {
 			if (!tempWordsList[foundIndex].isIncluded) {
 				tempWordsList[foundIndex].isIncluded = true;
 				setValidWordsData(tempWordsList);
+				if (gameContext) gameContext.updateWordsList(tempWordsList);
 				return 1;
 			} else return 2;
 		}
