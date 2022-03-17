@@ -18,7 +18,7 @@ function CountDown() {
 
 	useEffect(() => {
 		// TODO:: TO BE REPLACED BY TIME OF THE GAME ON THE SERVER IF EXISTS
-		let cTime = new Date(+new Date() + 60000 * 0.2).getTime(); //Adding two minutes to current time
+		let cTime = new Date(+new Date() + 60000 * 2).getTime(); //Adding two minutes to current time
 		if (!countDownTime) {
 			setCountDownTime(cTime);
 			return;
