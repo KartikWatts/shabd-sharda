@@ -24,6 +24,10 @@ function CountDown() {
 	}, []);
 
 	useEffect(() => {
+		if (countDownTimerSound) countDownTimerSound.setIsLoopingAsync(true);
+	}, [countDownTimerSound]);
+
+	useEffect(() => {
 		// TODO:: TO BE REPLACED BY TIME OF THE GAME ON THE SERVER IF EXISTS
 		let cTime = new Date(+new Date() + 60000 * 2).getTime(); //Adding two minutes to current time
 		if (!countDownTime) {
@@ -72,7 +76,7 @@ function CountDown() {
 			<Text
 				style={[
 					isFinalSeconds ? tw`text-red-400` : tw`text-slate-300`,
-					tw`text-2xl`,
+					tw`text-3xl`,
 				]}
 			>
 				{countDown}

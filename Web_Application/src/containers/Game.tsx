@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import GameBox from "../components/GameBox";
-import WordDisplay from "../components/WordDisplay";
 import letter_selector_sound from "../assets/sounds/letter_selector.mp3";
 import already_present_sound from "../assets/sounds/already_present.mp3";
 import accepted_word_sound from "../assets/sounds/accepted_word.mp3";
@@ -8,7 +7,10 @@ import invalid_word_sound from "../assets/sounds/invalid_word.mp3";
 import bonus1_sound from "../assets/sounds/bonus1.mp3";
 import useSound from "use-sound";
 import { originalData, solutionData } from "../assets/data/GameDataSource";
-import { WordsData, Data } from "../assets/data/Interfaces";
+import { WordsData, Data, FoundWords } from "../assets/data/Interfaces";
+import ScoreDisplay from "../components/ScoreDisplay";
+import WordDisplay from "../components/WordDisplay";
+import { GameContext } from "../contexts/GameContext";
 
 function Game() {
 	let validWordsList: Array<WordsData> = [];
@@ -38,6 +40,12 @@ function Game() {
 	const [currentWordScore, setCurrentWordScore] = useState<number>(0);
 	const [gameScore, setGameScore] = useState<number>(0);
 	const [selectedBoxId, setSelectedBoxId] = useState<number>(-1);
+	const [foundWords, setFoundWords] = useState<FoundWords[]>([]);
+	const gameContext = useContext(GameContext);
+
+	useEffect(() => {
+		if (gameContext) gameContext.updateGameArray(gameData);
+	}, []);
 
 	document.addEventListener("mousedown", () => {
 		setIsMouseDown(true);
@@ -106,6 +114,7 @@ function Game() {
 			if (!tempWordsList[foundIndex].isIncluded) {
 				tempWordsList[foundIndex].isIncluded = true;
 				setValidWordsData(tempWordsList);
+				if (gameContext) gameContext.updateWordsList(tempWordsList);
 				return 1;
 			} else return 2;
 		}
@@ -176,9 +185,22 @@ function Game() {
 				specialComments.classList.remove("scale-1");
 				specialComments.classList.add("scale-0");
 			}
-			if (validStatus == 1) tempScore += currentWordScore;
+			if (validStatus == 1) {
+				tempScore += currentWordScore;
+
+				let tempFoundWords = foundWords;
+				tempFoundWords.push({
+					score: currentWordScore,
+					value: currentWord,
+				});
+				setFoundWords(tempFoundWords);
+				let foundWordsDiv = document.getElementById("found-words-list");
+				if (foundWordsDiv)
+					foundWordsDiv.scrollTop = foundWordsDiv.scrollHeight;
+			}
 
 			setGameScore(tempScore);
+			if (gameContext) gameContext.updateScore(tempScore);
 			setCurrentWordScore(0);
 			setCurrentWord("");
 			setGameData(originalData);
@@ -256,7 +278,12 @@ function Game() {
 					Awesome!
 				</div>
 			</div>
-			<WordDisplay word={currentWord} score={gameScore} />
+			<ScoreDisplay
+				word={currentWord}
+				score={gameScore}
+				totalWords={solutionData.length || 0}
+				foundWords={foundWords.length}
+			/>
 			<div
 				className="game-box grid grid-cols-4 gap-1.5"
 				onTouchMove={(e) => {
@@ -295,6 +322,7 @@ function Game() {
 					);
 				})}
 			</div>
+			<WordDisplay foundWords={foundWords} />
 		</div>
 	);
 }

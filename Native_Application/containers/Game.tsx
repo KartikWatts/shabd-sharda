@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import tw from "twrnc";
 import { View, Text, GestureResponderEvent, StyleSheet } from "react-native";
-import { WordsData, Data, LayoutData } from "../assets/data/Interfaces";
+import {
+	WordsData,
+	Data,
+	LayoutData,
+	FoundWords,
+} from "../assets/data/Interfaces";
 import { originalData, solutionData } from "../assets/data/GameDataSource";
 import GameBox from "../components/GameBox";
-import WordDisplay from "../components/WordDisplay";
 import { ALREADY, CORRECT, SELECTED, WRONG } from "../assets/data/Types";
 import { Audio } from "expo-av";
+import ScoreDisplay from "../components/ScoreDisplay";
+import WordDisplay from "../components/WordDisplay";
+import { GameContext } from "../contexts/GameContext";
 
 function Game() {
 	let validWordsList: Array<WordsData> = [];
@@ -23,6 +30,8 @@ function Game() {
 	);
 	const [isItAwesome, setIsItAwesome] = useState<boolean>(false);
 	const [selectedBoxId, setSelectedBoxId] = useState<number>(-1);
+	const [foundWords, setFoundWords] = useState<FoundWords[]>([]);
+	const gameContext = useContext(GameContext);
 
 	solutionData.map((solution) => {
 		if (solution.length > 2) {
@@ -32,6 +41,10 @@ function Game() {
 			});
 		}
 	});
+
+	useEffect(() => {
+		if (gameContext) gameContext.updateGameArray(gameData);
+	}, []);
 
 	const [sound, setSound] = useState<Audio.Sound>();
 
@@ -133,6 +146,7 @@ function Game() {
 			if (!tempWordsList[foundIndex].isIncluded) {
 				tempWordsList[foundIndex].isIncluded = true;
 				setValidWordsData(tempWordsList);
+				if (gameContext) gameContext.updateWordsList(tempWordsList);
 				return 1;
 			} else return 2;
 		}
@@ -221,11 +235,21 @@ function Game() {
 		if (validStatus == 2) playAlreadyPresentSound();
 
 		setTimeout(() => {
-			if (validStatus == 1) tempScore += currentWordScore;
+			if (validStatus == 1) {
+				tempScore += currentWordScore;
+
+				let tempFoundWords = foundWords;
+				tempFoundWords.unshift({
+					score: currentWordScore,
+					value: currentWord,
+				});
+				setFoundWords(tempFoundWords);
+			}
 			console.log(currentWord);
 			console.log("Score: ", currentWordScore);
 
 			setGameScore(tempScore);
+			if (gameContext) gameContext.updateScore(tempScore);
 			setCurrentWordScore(0);
 			setCurrentWord("");
 			setSelectedBoxId(-1);
@@ -263,7 +287,12 @@ function Game() {
 				</Text>
 			</View>
 
-			<WordDisplay word={currentWord} score={gameScore} />
+			<ScoreDisplay
+				word={currentWord}
+				score={gameScore}
+				totalWords={solutionData.length || 0}
+				foundWords={foundWords.length}
+			/>
 
 			<View
 				onLayout={({ nativeEvent }) => {
@@ -285,6 +314,7 @@ function Game() {
 					return <GameBox key={data.id} {...data} />;
 				})}
 			</View>
+			<WordDisplay foundWords={foundWords} />
 		</View>
 	);
 }
