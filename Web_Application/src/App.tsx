@@ -6,13 +6,15 @@ import { GameContext } from "./contexts/GameContext";
 function App() {
 	const gameContext = useContext(GameContext);
 
-	// let multilineEnv = process.env.REACT_APP_MULTILINE;
-	// if (multilineEnv) {
-	// 	multilineEnv = multilineEnv.replace(/'/g, '"');
-	// 	let multilineEnvJson = JSON.parse(multilineEnv);
-	// 	console.log(multilineEnvJson);
-	// 	console.log(multilineEnvJson.apiKey);
-	// }
+	let multilineEnv = process.env.REACT_APP_FIREBASE_CONFIG;
+
+	if (multilineEnv) {
+		multilineEnv = multilineEnv.replace(/'/g, '"');
+		let multilineEnvJson = JSON.parse(multilineEnv);
+		console.log(multilineEnvJson);
+		let { apiKey } = multilineEnvJson;
+		console.log(apiKey);
+	}
 
 	return (
 		<div className="w-screen h-screen bg-slate-600 flex justify-center items-center flex-col">
