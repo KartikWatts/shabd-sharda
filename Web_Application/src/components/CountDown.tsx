@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import countdown_timer from "../assets/sounds/countdown_time.mp3";
-import useSound from "use-sound";
 import { GameContext } from "../contexts/GameContext";
 
 function CountDown() {
@@ -10,8 +9,12 @@ function CountDown() {
 
 	const gameContext = useContext(GameContext);
 
-	const [playCountDownTimer, { stop: stopCountDownTimer }] =
-		useSound(countdown_timer);
+	const [playCountDownTimer, setPlayCountDownTimer] = useState(
+		new Audio(countdown_timer)
+	);
+	useEffect(() => {
+		playCountDownTimer.loop = true;
+	}, []);
 
 	useEffect(() => {
 		// TODO:: TO BE REPLACED BY TIME OF THE GAME ON THE SERVER IF EXISTS
@@ -38,20 +41,20 @@ function CountDown() {
 			}
 			if (seconds == 0) {
 				clearInterval(countDownInterval);
-				stopCountDownTimer();
-				setTimeout(() => {
-					if (gameContext) gameContext.toggleGameState();
-				}, 10);
+				playCountDownTimer.pause();
+
+				if (playCountDownTimer.paused) {
+					setTimeout(() => {
+						if (gameContext) gameContext.toggleGameState();
+					}, 10);
+				}
 			}
 		}, 1000);
 	}, [countDownTime]);
 
 	useEffect(() => {
 		if (countDown == "10") {
-			playCountDownTimer();
-		}
-		if (countDown == "0") {
-			stopCountDownTimer();
+			playCountDownTimer.play();
 		}
 	}, [countDown]);
 
@@ -60,7 +63,7 @@ function CountDown() {
 			id="countdown_timer"
 			className={`${
 				isFinalSeconds ? "text-red-400" : "text-slate-300"
-			}   text-2xl`}
+			}   text-3xl`}
 		>
 			{countDown}
 		</div>

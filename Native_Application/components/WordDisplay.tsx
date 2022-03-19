@@ -1,29 +1,38 @@
-import React, { useState } from "react";
-import { View, Text } from "react-native";
-import tw from "twrnc";
-
+import { ScrollView, Text, View } from "react-native";
 import { WordProps } from "../assets/data/Types";
-import CountDown from "./CountDown";
+import tw from "twrnc";
 
 function WordDisplay(props: WordProps) {
 	return (
-		<View style={tw`h-8 w-full mb-8 flex flex-row items-center px-4`}>
-			<View>
-				<CountDown />
-				<View style={tw`w-30 px-2`}>
-					<Text style={tw`text-slate-300 text-lg`}>
-						Score:{" "}
-						<Text style={tw`text-xl text-white`}>
-							{props.score}
-						</Text>
-					</Text>
+		<View style={tw`flex-1 w-full p-4 m-5 flex flex-col justify-center`}>
+			<View style={tw`flex flex-row items-center`}>
+				<Text style={tw`text-amber-500 text-base`}>Words Found</Text>
+				<Text style={tw`text-amber-300 text-sm ml-1`}>
+					({props.foundWords.length})
+				</Text>
+			</View>
+			<ScrollView
+				persistentScrollbar
+				style={tw`w-8/8 h-7/8 border rounded-sm border-white p-2 `}
+			>
+				<View style={tw`flex-row flex-wrap`}>
+					{props.foundWords.map((word, index) => {
+						return (
+							<View
+								key={index}
+								style={tw`flex flex-row mr-6 mb-1`}
+							>
+								<Text style={tw`text-sm text-amber-300`}>
+									{word.value}
+								</Text>
+								<Text style={tw`text-amber-500 ml-1`}>
+									-{word.score}
+								</Text>
+							</View>
+						);
+					})}
 				</View>
-			</View>
-			<View>
-				{props.word != "" && (
-					<Text style={tw`text-lg bg-white px-2`}>{props.word}</Text>
-				)}
-			</View>
+			</ScrollView>
 		</View>
 	);
 }

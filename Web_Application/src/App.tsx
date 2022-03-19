@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { json } from "stream/consumers";
 import Game from "./containers/Game";
+import ResultDisplay from "./containers/ResultDisplay";
 import { GameContext } from "./contexts/GameContext";
 
 function App() {
@@ -10,6 +11,12 @@ function App() {
 		<div className="w-screen h-screen bg-slate-600 flex justify-center items-center flex-col">
 			{gameContext && gameContext.isGameOn ? (
 				<Game />
+			) : gameContext && gameContext.wordsList.length > 0 ? (
+				<ResultDisplay
+					gameArray={gameContext.gameArray}
+					wordsList={gameContext.wordsList}
+					score={gameContext.score}
+				/>
 			) : (
 				<div>
 					<button
