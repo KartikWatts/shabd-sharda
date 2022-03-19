@@ -4,6 +4,7 @@ import { GameContext } from "./contexts/GameContext";
 
 function App() {
 	const gameContext = useContext(GameContext);
+	console.log(process.env.REACT_APP_FIREBASE_API_KEY);
 
 	return (
 		<div className="w-screen h-screen bg-slate-600 flex justify-center items-center flex-col">

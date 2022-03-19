@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - "master"
+            - "feature-firebase-auth"
 
 jobs:
     build:
@@ -19,6 +20,8 @@ jobs:
 
             - name: Install and Build 🔧
               run: cd Web_Application && yarn install && yarn run build
+              env:
+                  REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
 
             - name: Deploy 🚀
               uses: JamesIves/github-pages-deploy-action@4.1.7
