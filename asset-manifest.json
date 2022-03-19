@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/shabd-sharda/static/css/main.6dca72d9.css",
-    "main.js": "/shabd-sharda/static/js/main.a79508d5.js",
+    "main.css": "/shabd-sharda/static/css/main.6f5f8d71.css",
+    "main.js": "/shabd-sharda/static/js/main.2310f21c.js",
     "static/js/845.aa1021ec.chunk.js": "/shabd-sharda/static/js/845.aa1021ec.chunk.js",
     "static/js/787.912e1287.chunk.js": "/shabd-sharda/static/js/787.912e1287.chunk.js",
-    "static/media/countdown_time.mp3": "/shabd-sharda/static/media/countdown_time.87338c536350b4a7568f.mp3",
+    "static/media/countdown_time.mp3": "/shabd-sharda/static/media/countdown_time.4ac80887585c1748d66e.mp3",
     "static/media/accepted_word.mp3": "/shabd-sharda/static/media/accepted_word.a3f284807df7209b6d06.mp3",
     "static/media/bonus1.mp3": "/shabd-sharda/static/media/bonus1.d413ce122cd53276334d.mp3",
     "static/media/invalid_word.mp3": "/shabd-sharda/static/media/invalid_word.1f261ef37a60138e2ec3.mp3",
     "static/media/already_present.mp3": "/shabd-sharda/static/media/already_present.cb81ebd6092dba79c639.mp3",
     "static/media/letter_selector.mp3": "/shabd-sharda/static/media/letter_selector.194d28c0f1eb55d0c7ed.mp3",
     "index.html": "/shabd-sharda/index.html",
-    "main.6dca72d9.css.map": "/shabd-sharda/static/css/main.6dca72d9.css.map",
-    "main.a79508d5.js.map": "/shabd-sharda/static/js/main.a79508d5.js.map",
+    "main.6f5f8d71.css.map": "/shabd-sharda/static/css/main.6f5f8d71.css.map",
+    "main.2310f21c.js.map": "/shabd-sharda/static/js/main.2310f21c.js.map",
     "845.aa1021ec.chunk.js.map": "/shabd-sharda/static/js/845.aa1021ec.chunk.js.map",
     "787.912e1287.chunk.js.map": "/shabd-sharda/static/js/787.912e1287.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6dca72d9.css",
-    "static/js/main.a79508d5.js"
+    "static/css/main.6f5f8d71.css",
+    "static/js/main.2310f21c.js"
   ]
 }
