@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { json } from "stream/consumers";
+import NavBar from "./components/NavBar";
 import UserAuth from "./components/UserAuth";
 import Game from "./containers/Game";
 import ResultDisplay from "./containers/ResultDisplay";
@@ -10,8 +11,9 @@ function App() {
 
 	return (
 		<>
-			<UserAuth />
+			{/* <UserAuth /> */}
 			<div className="w-screen h-screen bg-slate-600 flex justify-center items-center flex-col">
+				<NavBar />
 				{gameContext && gameContext.isGameOn ? (
 					<Game />
 				) : gameContext && gameContext.wordsList.length > 0 ? (
