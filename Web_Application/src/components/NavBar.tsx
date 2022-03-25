@@ -1,12 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserState } from "../assets/data/Interfaces";
 import { UserActionType } from "../assets/data/Types";
+import { GameContext } from "../contexts/GameContext";
 import { UserContext } from "../contexts/UserContext";
 import SignInModal from "./SignInModal";
 
 const NavBar = () => {
 	const NAME_CONST_KEYWORD = "Bramh";
 	const userContext = useContext(UserContext);
+	const gameContext = useContext(GameContext);
+
 	const [playerData, setPlayerData] = useState<UserState>({
 		uid: null,
 		displayName: "",
@@ -14,6 +17,7 @@ const NavBar = () => {
 		providerId: null,
 	});
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+	const [isGameOn, setIsGameOn] = useState(false);
 	const [modalOpen, setModalOpen] = useState(false);
 
 	const assignNameAndUid = (displayName?: string): UserState => {
@@ -42,6 +46,12 @@ const NavBar = () => {
 			userContext.authUser(UserActionType.UPDATE, newData);
 		}
 	};
+
+	useEffect(() => {
+		if (gameContext) {
+			setIsGameOn(gameContext.isGameOn);
+		}
+	}, [gameContext]);
 
 	useEffect(() => {
 		if (!userContext) return;
@@ -91,13 +101,15 @@ const NavBar = () => {
 	return (
 		<>
 			<SignInModal
-				isModalOpen={modalOpen && !isUserLoggedIn}
+				isModalOpen={modalOpen && !isUserLoggedIn && !isGameOn}
 				updateModalState={(stateArg: boolean) => setModalOpen(stateArg)}
 			/>
 			<div className="absolute top-5 left-10">
 				<div className="flex flex-row justify-center items-center cursor-pointer">
 					<div
-						className="h-20 w-20 rounded-full overflow-hidden bg-white/50 flex justify-center hover:scale-105 transition-all"
+						className={`h-20 w-20 rounded-full overflow-hidden bg-white/50 flex justify-center hover:scale-105 transition-all ${
+							isGameOn && "hidden"
+						} md:flex`}
 						onClick={() => setModalOpen(true)}
 					>
 						<img
@@ -111,7 +123,9 @@ const NavBar = () => {
 					</div>
 					<input
 						id="user_name"
-						className="ml-2 text-white bg-transparent max-w-sm"
+						className={`ml-2 text-white bg-transparent max-w-sm ${
+							isGameOn && "hidden"
+						} lg:inline`}
 						style={{
 							width: `${
 								playerData.displayName
@@ -119,7 +133,7 @@ const NavBar = () => {
 									: "10px"
 							}ch`,
 						}}
-						disabled={isUserLoggedIn ? true : false}
+						disabled={isUserLoggedIn || isGameOn ? true : false}
 						value={playerData.displayName || ""}
 						onChange={(e) => {
 							if (isUserLoggedIn) return;
@@ -131,11 +145,11 @@ const NavBar = () => {
 								});
 						}}
 						onBlur={() => {
-							if (isUserLoggedIn) return;
+							if (isUserLoggedIn || isGameOn) return;
 							updateNameAndUid();
 						}}
 						onKeyDown={(e) => {
-							if (isUserLoggedIn) return;
+							if (isUserLoggedIn || isGameOn) return;
 							if (e.keyCode === 13) {
 								updateNameAndUid();
 								e.currentTarget.blur();
@@ -144,26 +158,28 @@ const NavBar = () => {
 					/>
 				</div>
 			</div>
-			<div className="absolute top-5 right-10 cursor-pointer">
-				{isUserLoggedIn ? (
-					<div
-						className="px-4 py-2 font-bold text-white bg-red-400 rounded-md hover:scale-105"
-						onClick={() => {
-							if (!userContext) return;
-							userContext.authUser(UserActionType.LOGOUT);
-						}}
-					>
-						Sign Out
-					</div>
-				) : (
-					<div
-						className="px-4 py-2 font-bold text-white bg-blue-500 rounded-md hover:scale-105"
-						onClick={() => setModalOpen(true)}
-					>
-						Sign In
-					</div>
-				)}
-			</div>
+			{!isGameOn && (
+				<div className="absolute top-5 right-10 cursor-pointer">
+					{isUserLoggedIn ? (
+						<div
+							className="px-4 py-2 font-bold text-white bg-red-400 rounded-md hover:scale-105"
+							onClick={() => {
+								if (!userContext) return;
+								userContext.authUser(UserActionType.LOGOUT);
+							}}
+						>
+							Sign Out
+						</div>
+					) : (
+						<div
+							className="px-4 py-2 font-bold text-white bg-blue-500 rounded-md hover:scale-105"
+							onClick={() => setModalOpen(true)}
+						>
+							Sign In
+						</div>
+					)}
+				</div>
+			)}
 		</>
 	);
 };
