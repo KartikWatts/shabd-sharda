@@ -14,6 +14,7 @@ const NavBar = () => {
 		providerId: null,
 	});
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+	const [modalOpen, setModalOpen] = useState(false);
 
 	const assignNameAndUid = (displayName?: string): UserState => {
 		if (!userContext) return playerData;
@@ -56,15 +57,21 @@ const NavBar = () => {
 				return;
 			}
 		}
+
 		let newData = assignNameAndUid();
 		userContext.authUser(UserActionType.UPDATE, newData);
 	}, []);
 
 	useEffect(() => {
-		if (userContext && userContext.data.uid) {
+		if (!userContext) return;
+
+		if (userContext.data.uid) {
 			if (userContext.data.providerId != null) setIsUserLoggedIn(true);
 			setPlayerData(userContext.data);
 		} else {
+			// TODO:: Glitch making it to load different data initially
+			let newData = assignNameAndUid();
+			setPlayerData(newData);
 			setIsUserLoggedIn(false);
 		}
 	}, [userContext]);
@@ -75,10 +82,11 @@ const NavBar = () => {
 			document.querySelector("#user_name") == document.activeElement
 		)
 			return;
+		// TODO:: Glitch making it to load different data initially
+		// console.log("local storage data updated: ", playerData);
+
 		localStorage.setItem("playerData", JSON.stringify({ ...playerData }));
 	}, [playerData]);
-
-	const [modalOpen, setModalOpen] = useState(false);
 
 	return (
 		<>
@@ -105,7 +113,11 @@ const NavBar = () => {
 						id="user_name"
 						className="ml-2 text-white bg-transparent max-w-sm"
 						style={{
-							width: `${playerData.displayName.length + 2}ch`,
+							width: `${
+								playerData.displayName
+									? playerData.displayName.length + 2
+									: "10px"
+							}ch`,
 						}}
 						disabled={isUserLoggedIn ? true : false}
 						value={playerData.displayName || ""}
@@ -131,6 +143,26 @@ const NavBar = () => {
 						}}
 					/>
 				</div>
+			</div>
+			<div className="absolute top-5 right-10 cursor-pointer">
+				{isUserLoggedIn ? (
+					<div
+						className="px-4 py-2 font-bold text-white bg-red-400 rounded-md hover:scale-105"
+						onClick={() => {
+							if (!userContext) return;
+							userContext.authUser(UserActionType.LOGOUT);
+						}}
+					>
+						Sign Out
+					</div>
+				) : (
+					<div
+						className="px-4 py-2 font-bold text-white bg-blue-500 rounded-md hover:scale-105"
+						onClick={() => setModalOpen(true)}
+					>
+						Sign In
+					</div>
+				)}
 			</div>
 		</>
 	);

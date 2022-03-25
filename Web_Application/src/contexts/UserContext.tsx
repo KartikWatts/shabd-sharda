@@ -22,7 +22,7 @@ const userReducer = (state: UserState, action: UserAction) => {
 			return { ...state, ...payload };
 		}
 		case UserActionType.LOGOUT: {
-			return defaultState;
+			return { ...state, ...defaultState };
 		}
 		default: {
 			throw new Error(`Unhandled action type: ${type}`);
@@ -32,7 +32,7 @@ const userReducer = (state: UserState, action: UserAction) => {
 
 const UserProvider: React.FC = (props) => {
 	const [state, dispatch] = useReducer(userReducer, defaultState);
-	const authUser = (type: string, userData: UserState) => {
+	const authUser = (type: string, userData?: UserState) => {
 		dispatch({
 			type,
 			payload: userData,

@@ -38,7 +38,7 @@ export type GameContextType = {
 
 export type UserContextType = {
 	data: UserState;
-	authUser: (type: string, userData: UserState) => void;
+	authUser: (type: string, userData?: UserState) => void;
 };
 
 export type WordProps = {
