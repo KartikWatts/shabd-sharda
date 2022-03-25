@@ -4,13 +4,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { GameProvider } from "./contexts/GameContext";
+import { UserProvider } from "./contexts/UserContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as Element);
 
 root.render(
 	<React.StrictMode>
 		<GameProvider>
-			<App />
+			<UserProvider>
+				<App />
+			</UserProvider>
 		</GameProvider>
 	</React.StrictMode>
 );

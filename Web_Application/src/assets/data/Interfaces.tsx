@@ -1,5 +1,3 @@
-import { DataProps } from "./Types";
-
 export interface Data {
 	id: number;
 	letter: string;
@@ -23,15 +21,19 @@ export interface GameState {
 	wordsList: WordsData[];
 	score: number;
 }
-
-export enum GameActionType {
-	TOGGLE = "toggle",
-	UPDATE_WORDS_LIST = "update-words-list",
-	UPDATE_GAME_ARRAY = "update-game-array",
-	UPDATE_SCORE = "update-score",
+export interface UserState {
+	uid: string | null;
+	displayName: string;
+	photoURL: string;
+	providerId: string | null;
 }
+
 export interface GameAction {
-	type: GameActionType;
+	type: string;
+	payload: any;
+}
+export interface UserAction {
+	type: string;
 	payload: any;
 }
 

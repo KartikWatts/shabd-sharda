@@ -6,7 +6,9 @@ import {
 	signOut,
 	TwitterAuthProvider,
 } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { UserActionType } from "../assets/data/Types";
+import { UserContext } from "../contexts/UserContext";
 import { auth } from "../firebase-config";
 
 enum AuthProviderType {
@@ -17,7 +19,13 @@ enum AuthProviderType {
 }
 
 const UserAuth = () => {
-	const [loggedInUser, setLoggedInUser] = useState<any>(null);
+	const userContext = useContext(UserContext);
+
+	useEffect(() => {
+		let buttonList: NodeListOf<HTMLElement> =
+			document.querySelectorAll('[type="button"]');
+		buttonList[0].focus();
+	}, []);
 
 	const login = async (providerProps: string) => {
 		let provider = null;
@@ -42,9 +50,13 @@ const UserAuth = () => {
 			signInWithPopup(auth, provider)
 				.then((result) => {
 					let user = result.user;
-					console.log(user);
-					console.log(user.displayName);
-					setLoggedInUser(result);
+					if (userContext && user.displayName && user.photoURL)
+						userContext.authUser(UserActionType.LOGIN, {
+							uid: user.uid,
+							displayName: user.displayName,
+							photoURL: user.photoURL,
+							providerId: user.providerData[0].providerId,
+						});
 				})
 				.catch((error) => {
 					console.log(error);
@@ -66,12 +78,12 @@ const UserAuth = () => {
 
 	const logout = async () => {
 		await signOut(auth);
-		setLoggedInUser(null);
+		// setLoggedInUser(null);
 	};
 
 	return (
 		<div>
-			{!loggedInUser ? (
+			{userContext?.data.providerId == null ? (
 				<div className="flex flex-col items-center justify-center gap-2">
 					<button
 						type="button"

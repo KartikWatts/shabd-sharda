@@ -2,11 +2,10 @@ import React, { createContext, useReducer } from "react";
 import {
 	Data,
 	GameAction,
-	GameActionType,
 	GameState,
 	WordsData,
 } from "../assets/data/Interfaces";
-import { GameContextType } from "../assets/data/Types";
+import { GameActionType, GameContextType } from "../assets/data/Types";
 
 const defaultState = {
 	isGameOn: false,

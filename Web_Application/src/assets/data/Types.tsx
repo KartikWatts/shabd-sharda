@@ -1,4 +1,4 @@
-import { Data, FoundWords, WordsData } from "./Interfaces";
+import { Data, FoundWords, UserState, WordsData } from "./Interfaces";
 
 export type DataProps = {
 	id: number;
@@ -36,6 +36,24 @@ export type GameContextType = {
 	updateScore: (score: number) => void;
 };
 
+export type UserContextType = {
+	data: UserState;
+	authUser: (type: string, userData: UserState) => void;
+};
+
 export type WordProps = {
 	foundWords: FoundWords[];
 };
+
+export enum UserActionType {
+	LOGIN = "login",
+	LOGOUT = "logout",
+	UPDATE = "update",
+}
+
+export enum GameActionType {
+	TOGGLE = "toggle",
+	UPDATE_WORDS_LIST = "update-words-list",
+	UPDATE_GAME_ARRAY = "update-game-array",
+	UPDATE_SCORE = "update-score",
+}
