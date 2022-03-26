@@ -1,6 +1,7 @@
 name: Github Pages Deploy
 
 on:
+    pull_request:
     push:
         branches:
             - "master"
@@ -16,10 +17,23 @@ jobs:
         steps:
             - name: Checkout 🛎️
               uses: actions/checkout@v2
+              with:
+                # Make sure the actual branch is checked out when running on pull requests
+                ref: ${{ github.head_ref }}
+
+            - name: Prettify code ✨
+              uses: creyD/prettier_action@v4.2
+              with:
+                prettier_options: --write **/*.{js,md,ts,tsx}
 
             - name: Install and Build 🔧
               run: cd Web_Application && yarn install && yarn run build
+              env:
+                  REACT_APP_FIREBASE_CONFIG: ${{ secrets.REACT_APP_FIREBASE_CONFIG }}
 
+            - name: Run ESLint Web 🧪
+              run: cd Web_Application && yarn run lint
+              
             - name: Deploy 🚀
               uses: JamesIves/github-pages-deploy-action@4.1.7
               with:

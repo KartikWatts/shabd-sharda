@@ -4,15 +4,18 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { GameProvider } from "./contexts/GameContext";
+import { UserProvider } from "./contexts/UserContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as Element);
 
 root.render(
-	<React.StrictMode>
-		<GameProvider>
-			<App />
-		</GameProvider>
-	</React.StrictMode>
+  <React.StrictMode>
+    <GameProvider>
+      <UserProvider>
+        <App />
+      </UserProvider>
+    </GameProvider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

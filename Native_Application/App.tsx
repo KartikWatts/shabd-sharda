@@ -9,10 +9,10 @@ NavigationBar.setBehaviorAsync("overlay-swipe");
 NavigationBar.setVisibilityAsync("hidden");
 
 export default function App() {
-	return (
-		<GameProvider>
-			<GameWrapper />
-			<StatusBar hidden={true} />
-		</GameProvider>
-	);
+  return (
+    <GameProvider>
+      <GameWrapper />
+      <StatusBar hidden={true} />
+    </GameProvider>
+  );
 }

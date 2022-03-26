@@ -19,8 +19,8 @@
 
 ### Play the game here:
 
--   Web App: [https://kartikwatts.github.io/shabd-sharda](https://kartikwatts.github.io/shabd-sharda)
--   Native App: [https://expo.dev/@kartikwatts/shabd-sharda](https://expo.dev/@kartikwatts/shabd-sharda)
+- Web App: [https://kartikwatts.github.io/shabd-sharda](https://kartikwatts.github.io/shabd-sharda)
+- Native App: [https://expo.dev/@kartikwatts/shabd-sharda](https://expo.dev/@kartikwatts/shabd-sharda)
 
 ## Contribute/ Run Locally
 
@@ -30,9 +30,9 @@ Any contribution is really appreciated as it encourages and help the project to 
 
 The Project has three main directories:
 
--   [Web Application](https://github.com/KartikWatts/shabd-sharda/tree/master/Web_Application)
--   [Native Application](https://github.com/KartikWatts/shabd-sharda/tree/master/Native_Application)
--   [Game Data Script](https://github.com/KartikWatts/shabd-sharda/tree/master/Game_Data_Script_Python)
+- [Web Application](https://github.com/KartikWatts/shabd-sharda/tree/master/Web_Application)
+- [Native Application](https://github.com/KartikWatts/shabd-sharda/tree/master/Native_Application)
+- [Game Data Script](https://github.com/KartikWatts/shabd-sharda/tree/master/Game_Data_Script_Python)
 
 All the required details for the specific project can be found in corresponding ReadMe files.
 You can follow the instructions and start developing from there on.
@@ -41,11 +41,11 @@ You can follow the instructions and start developing from there on.
 
 We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's:
 
--   Reporting a bug
--   Discussing the current state of the code
--   Submitting a fix
--   Proposing new features
--   Becoming a maintainer
+- Reporting a bug
+- Discussing the current state of the code
+- Submitting a fix
+- Proposing new features
+- Becoming a maintainer
 
 ### We Develop with Github
 
@@ -74,13 +74,13 @@ We use GitHub issues to track public bugs. Report a bug by [opening a new issue]
 
 **Great Bug Reports** tend to have:
 
--   A quick summary and/or background
--   Steps to reproduce
-    -   Be specific!
-    -   Give sample code if you can. [This stackoverflow question](http://stackoverflow.com/q/12488905/180626) includes sample code that _anyone_ with a base R setup can run to reproduce what I was seeing
--   What you expected would happen
--   What actually happens
--   Notes (possibly including why you think this might be happening, or stuff you tried that didn't work)
+- A quick summary and/or background
+- Steps to reproduce
+  - Be specific!
+  - Give sample code if you can. [This stackoverflow question](http://stackoverflow.com/q/12488905/180626) includes sample code that _anyone_ with a base R setup can run to reproduce what I was seeing
+- What you expected would happen
+- What actually happens
+- Notes (possibly including why you think this might be happening, or stuff you tried that didn't work)
 
 People _love_ thorough bug reports. I'm not even kidding.
 
@@ -90,8 +90,8 @@ By contributing, you agree that your contributions will be licensed under its MI
 
 ## References
 
--   The Logo is based on ancient Sarawati Yantra.
+- The Logo is based on ancient Sarawati Yantra.
 
-*   The Dictionary used for the project is utilized from [https://github.com/dwyl/english-words](https://github.com/dwyl/english-words)
+* The Dictionary used for the project is utilized from [https://github.com/dwyl/english-words](https://github.com/dwyl/english-words)
 
--   The open-source contribution guidelines was adapted from [Facebook's Draft](https://gist.github.com/briandk/3d2e8b3ec8daf5a27a62)
+- The open-source contribution guidelines was adapted from [Facebook's Draft](https://gist.github.com/briandk/3d2e8b3ec8daf5a27a62)
