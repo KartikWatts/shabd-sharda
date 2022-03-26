@@ -13,9 +13,9 @@ let firebaseConfigEnv = process.env.REACT_APP_FIREBASE_CONFIG;
 let firebaseConfig = {};
 
 if (firebaseConfigEnv) {
-	firebaseConfigEnv = firebaseConfigEnv.replace(/'/g, '"');
-	let firebaseConfigJson = JSON.parse(firebaseConfigEnv);
-	firebaseConfig = firebaseConfigJson;
+  firebaseConfigEnv = firebaseConfigEnv.replace(/'/g, '"');
+  let firebaseConfigJson = JSON.parse(firebaseConfigEnv);
+  firebaseConfig = firebaseConfigJson;
 }
 
 // Initialize Firebase

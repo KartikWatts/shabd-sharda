@@ -9,13 +9,13 @@ import { UserProvider } from "./contexts/UserContext";
 const root = ReactDOM.createRoot(document.getElementById("root") as Element);
 
 root.render(
-	<React.StrictMode>
-		<GameProvider>
-			<UserProvider>
-				<App />
-			</UserProvider>
-		</GameProvider>
-	</React.StrictMode>
+  <React.StrictMode>
+    <GameProvider>
+      <UserProvider>
+        <App />
+      </UserProvider>
+    </GameProvider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
