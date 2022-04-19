@@ -53,7 +53,7 @@ function GameBox(props: DataProps) {
         }
       }}
       className={
-        "game-box transition duration-300 w-20 h-20 sm:w-28 sm:h-28 bg-blue-400 rounded-md drop-shadow-md flex justify-center items-center text-4xl sm:text-5xl select-none hover:bg-violet-400"
+        "game-box transition duration-300 w-20 h-20 sm:w-24 sm:h-24 bg-blue-400 rounded-md drop-shadow-md flex justify-center items-center text-4xl sm:text-5xl select-none hover:bg-violet-400"
       }
     >
       <span className="absolute top-0 left-1 sm:top-0.5 sm:left-1 text-sm sm:text-xl">

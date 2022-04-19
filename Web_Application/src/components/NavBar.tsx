@@ -123,7 +123,7 @@ const NavBar = () => {
           </div>
           <input
             id="user_name"
-            className={`ml-2 text-white bg-transparent max-w-sm ${
+            className={`ml-2 text-white bg-transparent max-w-sm hidden ${
               isGameOn && "hidden"
             } lg:inline`}
             style={{

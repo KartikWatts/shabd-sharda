@@ -3,39 +3,39 @@
 @tailwind utilities;
 
 body {
-	margin: 0;
-	box-sizing: border-box;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-		"Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-		"Helvetica Neue", sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* STYLES TO PREVENT BROWSER REFRESH ON SWIPE ON MOBILE CHROME */
 .body,
 .wrapper {
-	/* Break the flow */
-	position: absolute;
-	top: 0px;
+  /* Break the flow */
+  position: absolute;
+  top: 0px;
 
-	/* Give them all the available space */
-	width: 100%;
-	height: 100%;
+  /* Give them all the available space */
+  width: 100%;
+  height: 100%;
 
-	/* Remove the margins if any */
-	margin: 0;
+  /* Remove the margins if any */
+  margin: 0;
 
-	/* Allow them to scroll down the document */
-	overflow-y: hidden;
+  /* Allow them to scroll down the document */
+  overflow: hidden;
 }
 
 .body {
-	/* Sending body at the bottom of the stack */
-	z-index: 1;
+  /* Sending body at the bottom of the stack */
+  z-index: 1;
 }
 
 .wrapper {
-	/* Making the wrapper stack above the body */
-	z-index: 2;
+  /* Making the wrapper stack above the body */
+  z-index: 2;
 }
